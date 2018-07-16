@@ -19,6 +19,8 @@ namespace ProcessingUnits
 		private string tag;//the game tag of this object
 		private bool dontCollid;
 		private int owner; //numaric value of the owner 0 nuetral, 1 ally, -1 enemy
+		private Color ownerStartColor;
+		private Color ownerHoverColor;
 
 		#region Target Getter/Setter
 		public void setTarget(GameObject targetX)
@@ -56,6 +58,19 @@ namespace ProcessingUnits
 		public int getOwner()
 		{
 			return owner;
+		}
+
+		#endregion
+		#region Color Getter/Setter
+
+		public void setOwnerStartColor(Color ownerStartColorX)
+		{
+			ownerStartColor = ownerStartColorX;
+		}
+
+		public void setOwnerHoverColor(Color ownerHoverColorX)
+		{
+			ownerHoverColor = ownerHoverColorX;
 		}
 
 		#endregion
@@ -100,10 +115,22 @@ namespace ProcessingUnits
 
 			if (((t.tag == "EnemyComputerUnit") && (tag == "AllyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "EnemyEnergyPulse")))
 			{
-				if(t.getEnergy() < 1)
-				{
+				if(t.getEnergy() <= 0)
+				{ 
 					t.setUnitOwner(owner);
 					t.setMaterial();
+					t.setHoverColor(ownerHoverColor);
+					t.setStartClolor(ownerStartColor);
+					
+					if(owner == -1)
+					{
+						t.tag = "EnemyComputerUnit";
+					}
+
+					if(owner == 1)
+					{
+						t.tag = "AllyComputerUnit";
+					}
 				}
 				else
 				{
