@@ -134,10 +134,34 @@ namespace ProcessingUnits
                 attacking = attackingX;
         }
 
-        #endregion
+		#endregion
+		#region colour/material setters/getters
+
+		public void setStartClolor(Color startColorX)
+		{
+			startColor = startColorX;
+		}
+
+		public Color getStartColor()
+		{
+			return startColor;
+		}
+
+		public void setHoverColor(Color hoverColorX)
+		{
+			hoverColor = hoverColorX;
+		}
+
+		public Color getHoverColor()
+		{
+			return hoverColor;
+		}
 
 
-        void initializeValues()
+		#endregion
+
+
+		void initializeValues()
 		{
 			energyTransferRate = 1f;//processors have a base eTR speed on one pulse per second
 			energyCreationRate = 2f;//processor have a base eCR of one energy every 2 seconds
@@ -254,6 +278,8 @@ namespace ProcessingUnits
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
 				energyPulseGoScript.setTarget(targetCurrent);
 				energyPulseGoScript.setOwner(unitOwner);
+				energyPulseGoScript.setOwnerHoverColor(hoverColor);
+				energyPulseGoScript.setOwnerStartColor(startColor);
 			}
 
 			if (unitOwner == -1)
@@ -262,6 +288,9 @@ namespace ProcessingUnits
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
 				energyPulseGoScript.setTarget(targetCurrent);
 				energyPulseGoScript.setOwner(unitOwner);
+				energyPulseGoScript.setOwnerHoverColor(hoverColor);
+				energyPulseGoScript.setOwnerStartColor(startColor);
+
 			}
 		}
 		#endregion
