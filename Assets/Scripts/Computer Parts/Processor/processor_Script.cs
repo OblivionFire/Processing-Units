@@ -97,6 +97,10 @@ namespace ProcessingUnits
 		#endregion
 		#region target Getter and Setter
 
+		public void setTarget(GameObject targetX, int i)
+		{
+			targetsCurrent[i] = targetX;
+		}
 		public void setTarget(GameObject targetsX)
 		{
 			if (targetsX != null)
@@ -265,23 +269,22 @@ namespace ProcessingUnits
 				//Debug.Log(targetsCurrent[i]);
 				if ((energyLines[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
 				{
-					energyLines[i] = EL.drawEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
 				}
 
-				if ((energyLines[i] != null) && (targetsCurrent[i] != null))
-				{
-					energyTransfer();
-				}
+
 
 				if (targetsCurrent[i] != targetsLast[i])
 				{
 					if (targetsCurrent[i] != null)
 					{
-						energyLines[i] = EL.updateEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
+						energyLines[i] = EL.updateEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
 					}
 					targetsLast[i] = targetsCurrent[i];
 				}
 			}
+
+			energyTransfer();
 		}
 
 		#region checks
@@ -296,7 +299,15 @@ namespace ProcessingUnits
 					{
 						if (targetsTargets[j] == this.gameObject)
 						{
-							underAttacks[i] = true;
+							if (targetsCurrent[j].tag == this.gameObject.tag)
+							{
+								underAttack = false;
+							}
+							else
+							{
+								underAttacks[i] = true;
+							}
+
 						}
 
 						else
@@ -345,15 +356,19 @@ namespace ProcessingUnits
 		#region Pulse
 		void energyTransfer()
 		{
-			for (int i = 0; i < timeUntilPulse.Length; i++)
+			for (int i = 0; i < energyLines.Length; i++)
 			{
-				if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+
+				if ((energyLines[i] != null) && (targetsCurrent[i] != null))
 				{
-					createPulse(i);
-					energy--;
-					timeUntilPulse[i] = energyTransferRate;
+					if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+					{
+						createPulse(i);
+						energy--;
+						timeUntilPulse[i] = energyTransferRate;
+					}
+					timeUntilPulse[i] -= Time.deltaTime;
 				}
-				timeUntilPulse[i] -= Time.deltaTime;
 			}
 		}
 

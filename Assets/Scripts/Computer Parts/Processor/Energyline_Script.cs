@@ -28,7 +28,7 @@ public class EnergyLine_Script : MonoBehaviour
 
 	}
 
-	public GameObject drawEnergyLine(GameObject energyLine, bool underAttack, int owner, Transform p1, Transform p2)
+	public GameObject drawEnergyLine(GameObject energyLine, GameObject home, GameObject target, bool underAttack, int owner, Transform p1, Transform p2, int index)
 	{
 		if (underAttack)
 		{
@@ -50,6 +50,10 @@ public class EnergyLine_Script : MonoBehaviour
 			energyLine.transform.localScale = newScale;
 			energyLine.transform.Translate(posision, Space.World);
 			energyLine.transform.LookAt(midPosision);
+			energyLine.GetComponent<EnergyLineMang_Script>().setHome(this.gameObject);
+			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
 		}
 
 
@@ -72,12 +76,16 @@ public class EnergyLine_Script : MonoBehaviour
 			energyLine.transform.localScale = newScale;
 			energyLine.transform.Translate(posision, Space.World);
 			energyLine.transform.LookAt(p2.transform);
+			energyLine.GetComponent<EnergyLineMang_Script>().setHome(this.gameObject);
+			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
 		}
 
 		return energyLine;
 	}
 
-	public GameObject updateEnergyLine(GameObject energyLine, bool underAttack, int owner, Transform p1, Transform p2)
+	public GameObject updateEnergyLine(GameObject energyLine, GameObject home, GameObject target, bool underAttack, int owner, Transform p1, Transform p2, int index)
 	{
 		if (energyLine != null)
 		{
@@ -92,6 +100,10 @@ public class EnergyLine_Script : MonoBehaviour
 				energyLine.transform.localScale = newScale;
 				energyLine.transform.Translate(posision, Space.World);
 				energyLine.transform.LookAt(midPosision);
+				energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+				energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+				energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
+
 			}
 
 
@@ -103,18 +115,21 @@ public class EnergyLine_Script : MonoBehaviour
 				energyLine.transform.localScale = newScale;
 				energyLine.transform.Translate(posision, Space.World);
 				energyLine.transform.LookAt(p2.transform);
+				energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+				energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+				energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
 			}
 
 			return energyLine;
 		}
-		return drawEnergyLine(energyLine, underAttack, owner, p2, p2);
+		return drawEnergyLine(energyLine, home, target, underAttack, owner, p2, p2, index);
 	}
 
 	public void deletEnergyLine(GameObject energyLine)
 	{
 		if (energyLine != null)
 		{
-			Destroy(energyLine);
+			Destroy(energyLine.gameObject);
 		}
 	}
 }

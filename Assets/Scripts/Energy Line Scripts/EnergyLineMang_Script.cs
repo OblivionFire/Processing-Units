@@ -10,6 +10,8 @@ public class EnergyLineMang_Script : MonoBehaviour {
 	[Header("Private Veriables")]
 	private int i;
 	private ProcessingUnits.processor_Script home;
+	public GameObject homeProcessor;
+	public GameObject targetProcessor;
 
 
 	public void setI(int iX)
@@ -17,11 +19,11 @@ public class EnergyLineMang_Script : MonoBehaviour {
 		i = iX;
 	}
 
-	public void setHome(ProcessingUnits.processor_Script homeX)
+	public void setHome(GameObject homeX)
 	{
 		if(homeX != null)
 		{
-			home = homeX;
+			home = homeX.GetComponent<ProcessingUnits.processor_Script>();
 		}
 	}
 
@@ -44,10 +46,9 @@ public class EnergyLineMang_Script : MonoBehaviour {
 
 	private void OnMouseOver()
 	{
-		Debug.Log("Nouse over");
 		if(Input.GetMouseButtonDown(1))
 		{
-			
+			home.setTarget(null, i);
 			Destroy(this.gameObject);
 		}
 	}

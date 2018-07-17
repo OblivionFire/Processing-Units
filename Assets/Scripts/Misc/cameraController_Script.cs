@@ -36,15 +36,14 @@ public class cameraController_Script : MonoBehaviour
 		{
 			transform.Translate(Vector3.left * panSpeed * Time.deltaTime, Space.World);
 		}
-
-		float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-		Vector3 pos = transform.position;
-
-		pos.y += scroll * 1000 * scrollSpeed * Time.deltaTime;
-		pos.y = Mathf.Clamp(pos.y, minY, maxY);
-
-		transform.position = pos;
+		if(Input.GetKey("r"))
+		{
+			transform.Translate(Vector3.up * panSpeed * Time.deltaTime, Space.World);
+		}
+		if(Input.GetKey("f"))
+		{
+			transform.Translate(Vector3.down * panSpeed * Time.deltaTime, Space.World);
+		}
 
 	}
 }

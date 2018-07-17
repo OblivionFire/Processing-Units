@@ -124,12 +124,12 @@ namespace ProcessingUnits
 					
 					if(owner == -1)
 					{
-						t.tag = "EnemyComputerUnit";
+						target.tag = "EnemyComputerUnit";
 					}
 
 					if(owner == 1)
 					{
-						t.tag = "AllyComputerUnit";
+						target.tag = "AllyComputerUnit";
 					}
 				}
 				else
