@@ -121,10 +121,10 @@ namespace ProcessingUnits
 			else
 			{
 				attackerScript.setTarget(deffender);
-				deffenderScript.setAttacker(attacker);
+				deffenderScript.setAttackers(attacker);
                 attackerScript.removeEnergyLine();
                 deffenderScript.removeEnergyLine();
-                attackerScript.setAttacking(true);
+                //attackerScript.setAttacking(true);
                 attacker = null;
 				deffender = null;
 			}

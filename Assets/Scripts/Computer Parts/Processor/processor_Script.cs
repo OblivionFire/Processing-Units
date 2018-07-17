@@ -16,6 +16,7 @@ namespace ProcessingUnits
 		[Header("Object Stats: Count Down Veriables")]
 		public float timeUntilNextPulse;//count down veriable for energyTransferRate(eTR)
 		public float timeUntilNextEnergyCreation;//count down veriable for energyCreationRate(eCR)
+		public float[] timeUntilPulse; //Array of count down veriables
 		public int totalEnergyLines; //The total ammount of current energy Lines
 		public int maxEnergyLine; //The max amount of energy lines
 
@@ -96,17 +97,37 @@ namespace ProcessingUnits
 		#endregion
 		#region target Getter and Setter
 
-		public void setTarget(GameObject targetX)
+		public void setTarget(GameObject targetsX)
 		{
-			if (targetX != null)
+			if (targetsX != null)
 			{
-				targetCurrent = targetX;
+				for (int i = 0; i <= maxEnergyLine - 1; i++)
+				{
+					if (targetsX != null)
+					{
+						if (targetsCurrent[i] == null)
+						{
+							targetsCurrent[i] = targetsX;
+							targetsX = null;
+						}
+					}
+				}
+
+				if (targetsX != null)
+				{
+					targetsCurrent[1] = targetsX;
+				}
 			}
 		}
 
-		public GameObject getTarget()
+		public GameObject getTarget(int i)
 		{
-			return targetCurrent;
+			return targetsCurrent[i];
+		}
+
+		public GameObject[] getTargets()
+		{
+			return targetsCurrent;
 		}
 
 		#endregion
@@ -123,25 +144,40 @@ namespace ProcessingUnits
 		}
 
 		#endregion
-		#region attacker/attacking setter
+		#region attacker/attackers setter
 
-		public void setAttacker(GameObject attackerX)
+		public void setAttackers(GameObject attackerX)
 		{
 			if (attackerX != null)
 			{
-				attacker = attackerX;
+				for (int i = 0; i <= maxEnergyLine - 1; i++)
+				{
+					if (attackerX != null)
+					{
+						if (attackers[i] == null)
+						{
+							attackers[i] = attackerX;
+							attackerX = null;
+						}
+					}
+				}
+
+				if (attackerX != null)
+				{
+					attackers[1] = attackerX;
+				}
 			}
 		}
 
-		public GameObject getAttacker()
-		{
-			return attacker;
-		}
+		//public GameObject getAttacker()
+		//{
+		//	return attacker;
+		//}
 
-		public void setAttacking(bool attackingX)
-		{
-			attacking = attackingX;
-		}
+		//public void setAttacking(bool attackingX)
+		//{
+		//	attacking = attackingX;
+		//}
 
 		#endregion
 		#region colour/material setters/getters
@@ -172,9 +208,15 @@ namespace ProcessingUnits
 
 		void initializeValues()
 		{
+			maxEnergyLine = 4; //The max number of energy line an object can handle
 			energyTransferRate = .75f;//processors have a base eTR speed on one pulse per second
 			energyCreationRate = 2f;//processor have a base eCR of one energy every 2 seconds
 			timeUntilNextPulse = 0f;//start this at 0 so processor can imediatly lunch a pulse
+			timeUntilPulse = new float[maxEnergyLine];
+			for (int i = 0; i < timeUntilPulse.Length; i++)
+			{
+				timeUntilPulse[i] = 0;
+			}
 			timeUntilNextEnergyCreation = 1f;//start this at one so there is a slight delay on the fist energy added
 			targetCurrent = null;//can't be too carful
 			targetLast = null;//can't be too carful
@@ -213,12 +255,17 @@ namespace ProcessingUnits
 
 		void run()
 		{
-			
-			for(int i = 1; i <= maxEnergyLine; i++)
+
+			for (int i = 0; i <= maxEnergyLine - 1; i++)
 			{
+				//Debug.Log("i = " + i);
+				//Debug.Log("Energy Line " + i + " = ");
+				//Debug.Log(energyLines[i]);
+				//Debug.Log("Target " + i + " = ");
+				//Debug.Log(targetsCurrent[i]);
 				if ((energyLines[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
 				{
-					energyLineOne = EL.drawEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
 				}
 
 				if ((energyLines[i] != null) && (targetsCurrent[i] != null))
@@ -228,9 +275,9 @@ namespace ProcessingUnits
 
 				if (targetsCurrent[i] != targetsLast[i])
 				{
-					if(targetsCurrent[i] != null)
+					if (targetsCurrent[i] != null)
 					{
-						EL.updateEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
+						energyLines[i] = EL.updateEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform);
 					}
 					targetsLast[i] = targetsCurrent[i];
 				}
@@ -240,44 +287,55 @@ namespace ProcessingUnits
 		#region checks
 		void targetChecks()
 		{
-			if (targetCurrent != null)
+			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
 			{
-				if (targetCurrent.GetComponent<processor_Script>().getTarget() == gameObject)
+				if (targetsCurrent[i] != null)
 				{
-					underAttack = true;
+					GameObject[] targetsTargets = targetsCurrent[i].GetComponent<processor_Script>().getTargets();
+					for (int j = 0; j <= targetsTargets.Length - 1; j++)
+					{
+						if (targetsTargets[j] == this.gameObject)
+						{
+							underAttacks[i] = true;
+						}
+
+						else
+						{
+							attackings[i] = true;
+						}
+					}
 				}
 
 				else
 				{
-					attacking = true;
+					attackings[i] = false;
+					underAttacks[i] = false;
 				}
-			}
-
-			else
-			{
-				underAttack = false;
-				attacking = false;
 			}
 		}
 
 		void attackerChecks()
 		{
-			for(int i = 1; i <= maxEnergyLine; i++)
+			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
 			{
 				if (attackers[i] != null)
 				{
-					if (attackers[i].GetComponent<processor_Script>().getTarget() == this.gameObject)
+					GameObject[] attackerTargets = attackers[i].GetComponent<processor_Script>().getTargets();
+					for (int j = 0; j <= attackerTargets.Length - 1; j++)
 					{
-						underAttacks[i] = true;
+						if (attackerTargets[j] == this.gameObject)
+						{
+							underAttacks[i] = true;
+						}
 					}
-
-					else
-					{
-						attackers[i] = null;
-						underAttacks[i] = false;
-					}
-
 				}
+
+				else
+				{
+					attackers[i] = null;
+					underAttacks[i] = false;
+				}
+
 			}
 		}
 		#endregion
@@ -287,23 +345,28 @@ namespace ProcessingUnits
 		#region Pulse
 		void energyTransfer()
 		{
-			if ((timeUntilNextPulse <= 0) && (attacking = true) && (energy > 0))
+			for (int i = 0; i < timeUntilPulse.Length; i++)
 			{
-				createPulse();
-				energy--;
-				timeUntilNextPulse = energyTransferRate;
+				if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+				{
+					createPulse(i);
+					energy--;
+					timeUntilPulse[i] = energyTransferRate;
+				}
+				timeUntilPulse[i] -= Time.deltaTime;
 			}
-			timeUntilNextPulse -= Time.deltaTime;
 		}
 
 		#region create pulse
-		void createPulse()
+		void createPulse(int targetID)
 		{
+			Debug.Log("Create Pulse");
+			Debug.Log("target ID is: " + targetID);
 			if (unitOwner == 1)
 			{
 				GameObject energyPulseGO = Instantiate(allyEnergyPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetCurrent);
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(unitOwner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
@@ -313,7 +376,7 @@ namespace ProcessingUnits
 			{
 				GameObject energyPulseGO = Instantiate(enemyEnergyPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetCurrent);
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(unitOwner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
@@ -402,7 +465,6 @@ namespace ProcessingUnits
 
 			else
 			{
-				Debug.Log("Attacker and deffender still set to game objects");
 			}
 		}
 
@@ -410,7 +472,6 @@ namespace ProcessingUnits
 		{
 			if (Input.GetMouseButtonDown(1))
 			{
-				Debug.Log("2");
 				EL.deletEnergyLine(energyLineOne);
 
 				attacking = false;
