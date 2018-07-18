@@ -47,7 +47,7 @@ namespace ProcessingUnits
 		#endregion
 		#region owner Getter/Setter
 
-		public void setOwner (int ownerX)
+		public void setOwner(int ownerX)
 		{
 			if ((ownerX == 0) || (ownerX == 1) || (ownerX == -1))
 			{
@@ -113,39 +113,57 @@ namespace ProcessingUnits
 		{
 			processor_Script t = target.GetComponent<processor_Script>();
 
-			if (((t.tag == "EnemyComputerUnit") && (tag == "AllyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "EnemyEnergyPulse")))
+			if (t.tag == "NuetralComputerUnit")
 			{
-				if(t.getEnergy() <= 0)
-				{ 
-					t.setUnitOwner(owner);
-					t.setMaterial();
-					t.setHoverColor(ownerHoverColor);
-					t.setStartClolor(ownerStartColor);
-					
-					if(owner == -1)
-					{
-						t.tag = "EnemyComputerUnit";
-					}
-
-					if(owner == 1)
-					{
-						t.tag = "AllyComputerUnit";
-					}
-				}
-				else
+				if (owner == 1)
 				{
-					t.setEnergyMinusX(energy);
+					t.tag = "AllyComputerUnit";
 				}
-				Destroy(gameObject);
-				return;
+
+				if (owner == -1)
+				{
+					t.tag = "EnemyComputerUnit";
+				}
+				t.setUnitOwner(owner);
+				t.setMaterial();
+				t.setHoverColor(ownerHoverColor);
+				t.setStartClolor(ownerStartColor);
+
 			}
 
-			if (((t.tag == "EnemyComputerUnit") && (tag == "EnemyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "AllyEnergyPulse")))
+			else if (t.getEnergy() <= 0)
+			{
+				t.setUnitOwner(owner);
+				t.updateAllLine();
+				t.setMaterial();
+				t.setHoverColor(ownerHoverColor);
+				t.setStartClolor(ownerStartColor);
+
+
+				if (owner == -1)
+				{
+					target.tag = "EnemyComputerUnit";
+				}
+
+				if (owner == 1)
+				{
+					target.tag = "AllyComputerUnit";
+				}
+			}
+
+			else if (((t.tag == "EnemyComputerUnit") && (tag == "EnemyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "AllyEnergyPulse")))
 			{
 				t.setEnergyPlusX(energy);
 				Destroy(gameObject);
 				return;
 			}
+
+			else
+			{
+				t.setEnergyMinusX(energy);
+			}
+			Destroy(gameObject);
+			return;
 		}
 
 		void OnTriggerEnter(Collider other)

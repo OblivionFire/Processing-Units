@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 65637546134028524}
   - component: {fileID: 23905025026564138}
   - component: {fileID: 114352289959847022}
+  - component: {fileID: 114929416594939856}
   m_Layer: 0
   m_Name: processorAlly_GameObject
   m_TagString: AllyComputerUnit
@@ -111,6 +112,8 @@ MonoBehaviour:
   energyCreationRate: 0
   timeUntilNextPulse: 0
   timeUntilNextEnergyCreation: 0
+  totalEnergyLines: 0
+  maxEnergyLine: 0
   hoverColor: {r: 0.14181446, g: 0.15885419, b: 0.44852942, a: 0}
   allyProcessor_Material: {fileID: 2100000, guid: 67a24d60277ae7c4ba9d3a307229f910,
     type: 2}
@@ -127,4 +130,25 @@ MonoBehaviour:
   enemyEnergyLinePrefab: {fileID: 1517398007511760, guid: 6d9151232acbe11439c9ed8b5ae3d7fe,
     type: 2}
   processorUICanvasPrefab: {fileID: 223525785912686318, guid: d3057ed23b2dadd4881ac9cccd319b17,
+    type: 2}
+--- !u!114 &114929416594939856
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1064840017343102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9822686f10d5fee4c925d796da8b6fcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lineTarget: {fileID: 0}
+  owner: {fileID: 0}
+  enemyEnergyPulsePrefab: {fileID: 1828706814572214, guid: c0fc2bffb012bcb4a845136d09e41a26,
+    type: 2}
+  allyEnergyPulsePrefab: {fileID: 1828706814572214, guid: 63ea08c8faf52ea40a42b8d1d3e47361,
+    type: 2}
+  enemyEnergyLinePrefab: {fileID: 1517398007511760, guid: 6d9151232acbe11439c9ed8b5ae3d7fe,
+    type: 2}
+  allyEnergyLinePrefab: {fileID: 1517398007511760, guid: 26f38d5be8af5224bb4f0d750a74a40e,
     type: 2}

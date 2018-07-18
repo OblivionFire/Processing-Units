@@ -79,8 +79,8 @@ namespace ProcessingUnits
 			GameObject enemy = Instantiate(processorEnemyPrefab);
 			processor_Script allyScript = ally.GetComponent<processor_Script>();
 			processor_Script enemyScript = enemy.GetComponent<processor_Script>();
-			allyScript.setEnergy(5);
-			enemyScript.setEnergy(5);
+			allyScript.setEnergy(9);
+			enemyScript.setEnergy(9);
 			allyScript.setUnitOwner(1);
 			enemyScript.setUnitOwner(-1);
 			allyScript.hoverColor = processorAllyPrefab.GetComponent<processor_Script>().hoverColor;
@@ -120,13 +120,22 @@ namespace ProcessingUnits
 
 			else
 			{
-				attackerScript.setTarget(deffender);
-				deffenderScript.setAttacker(attacker);
-                attackerScript.removeEnergyLine();
-                deffenderScript.removeEnergyLine();
-                attackerScript.setAttacking(true);
-                attacker = null;
-				deffender = null;
+				if(attacker != deffender)
+				{
+					attackerScript.setTarget(deffender);
+					deffenderScript.setAttackers(attacker);
+					attackerScript.removeEnergyLine();
+					deffenderScript.removeEnergyLine();
+					//attackerScript.setAttacking(true);
+					attacker = null;
+					deffender = null;
+				}
+
+				else
+				{
+					attacker = null;
+					deffender = null;
+				}
 			}
 
 			#endregion

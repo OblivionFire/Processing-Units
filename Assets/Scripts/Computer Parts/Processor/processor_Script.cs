@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using TMPro;
-
+using System;
 
 namespace ProcessingUnits
 {
@@ -16,6 +16,9 @@ namespace ProcessingUnits
 		[Header("Object Stats: Count Down Veriables")]
 		public float timeUntilNextPulse;//count down veriable for energyTransferRate(eTR)
 		public float timeUntilNextEnergyCreation;//count down veriable for energyCreationRate(eCR)
+		public float[] timeUntilPulse; //Array of count down veriables
+		public int totalEnergyLines; //The total ammount of current energy Lines
+		public int maxEnergyLine; //The max amount of energy lines
 
 
 
@@ -41,15 +44,23 @@ namespace ProcessingUnits
 		private GameObject targetLast;//used to determin if the target has changed, if lastTarget != target you need to update things like energy line
 		private GameObject energyLineOne;//energy line
 		private GameObject attacker;//the attacking gameobject, should be made into an array at some point I think. This might all become a null issue when i start ussing thread strength
+		private GameObject[] energyLines; //array of energy Lines
+		private GameObject[] targetsCurrent;
+		private GameObject[] targetsLast;
+		private GameObject[] attackers;
+
 
 		[Header("Private Veriables: Scripts")]
 		private processorUI_Script processorUIScript; //ATTACH CANVAS AND TEXT TO PROCESSOR PRESET
+		private EnergyLine_Script EL;//energy line script of the processor
 		gameMaster_Script gameMaster;
 		processorUI_Script processorEnergyUIScript;
 
 		[Header("Private Veribales: Boolean Values")]
 		private bool underAttack;//set if the processor is under attack. GameMaster will set this if a processor sets this as a deffender
-        private bool attacking; //weather or not this processor is attacking
+		private bool attacking; //weather or not this processor is attacking
+		private bool[] underAttacks;
+		private bool[] attackings;
 
 		[Header("Private Veriables: Render")]
 		private Renderer rend;//render attached to this script, use to set colour and material
@@ -86,18 +97,42 @@ namespace ProcessingUnits
 		#endregion
 		#region target Getter and Setter
 
-		public void setTarget(GameObject targetX)
+		public void setTarget(GameObject targetX, int i)
 		{
-			if (targetX != null)
+			targetsCurrent[i] = targetX;
+		}
+		public void setTarget(GameObject targetsX)
+		{
+			if (targetsX != null)
 			{
-				targetCurrent = targetX;
+				for (int i = 0; i <= maxEnergyLine - 1; i++)
+				{
+					if (targetsX != null)
+					{
+						if (targetsCurrent[i] == null)
+						{
+							targetsCurrent[i] = targetsX;
+							targetsX = null;
+						}
+					}
+				}
+
+				if (targetsX != null)
+				{
+					targetsCurrent[1] = targetsX;
+				}
 			}
 		}
 
-        public GameObject getTarget()
-        {
-            return targetCurrent;
-        }
+		public GameObject getTarget(int i)
+		{
+			return targetsCurrent[i];
+		}
+
+		public GameObject[] getTargets()
+		{
+			return targetsCurrent;
+		}
 
 		#endregion
 		#region Unit Owner Getter/Setter
@@ -113,26 +148,40 @@ namespace ProcessingUnits
 		}
 
 		#endregion
-		#region attacker/attacking setter
+		#region attacker/attackers setter
 
-		public void setAttacker(GameObject attackerX)
+		public void setAttackers(GameObject attackerX)
 		{
-			if(attackerX != null)
+			if (attackerX != null)
 			{
-				attacker = attackerX;
-				updateEnergyLine();
+				for (int i = 0; i <= maxEnergyLine - 1; i++)
+				{
+					if (attackerX != null)
+					{
+						if (attackers[i] == null)
+						{
+							attackers[i] = attackerX;
+							attackerX = null;
+						}
+					}
+				}
+
+				if (attackerX != null)
+				{
+					attackers[1] = attackerX;
+				}
 			}
 		}
 
-		public GameObject getAttacker()
-		{
-			return attacker;
-		}
+		//public GameObject getAttacker()
+		//{
+		//	return attacker;
+		//}
 
-        public void setAttacking(bool attackingX)
-        {
-                attacking = attackingX;
-        }
+		//public void setAttacking(bool attackingX)
+		//{
+		//	attacking = attackingX;
+		//}
 
 		#endregion
 		#region colour/material setters/getters
@@ -163,9 +212,15 @@ namespace ProcessingUnits
 
 		void initializeValues()
 		{
-			energyTransferRate = 1f;//processors have a base eTR speed on one pulse per second
+			maxEnergyLine = 4; //The max number of energy line an object can handle
+			energyTransferRate = .75f;//processors have a base eTR speed on one pulse per second
 			energyCreationRate = 2f;//processor have a base eCR of one energy every 2 seconds
 			timeUntilNextPulse = 0f;//start this at 0 so processor can imediatly lunch a pulse
+			timeUntilPulse = new float[maxEnergyLine];
+			for (int i = 0; i < timeUntilPulse.Length; i++)
+			{
+				timeUntilPulse[i] = 0;
+			}
 			timeUntilNextEnergyCreation = 1f;//start this at one so there is a slight delay on the fist energy added
 			targetCurrent = null;//can't be too carful
 			targetLast = null;//can't be too carful
@@ -174,8 +229,15 @@ namespace ProcessingUnits
 			gameMaster = gameMaster_Script.instance;//singleton patter, making sure all objects referance the same instance gameMaster script
 			underAttack = false;
 			rend = gameObject.GetComponent<Renderer>();//render attached to the processor used to set colour and material.
+			EL = this.GetComponent<EnergyLine_Script>();//get the EnergyLine_Script
 			startColor = rend.material.color;//Setting the starting color to what ever the color the object starts 
 			Instantiate(processorUICanvasPrefab, transform);//The UI element that displays the processor Energy
+			energyLines = new GameObject[maxEnergyLine];
+			targetsCurrent = new GameObject[maxEnergyLine];
+			targetsLast = new GameObject[maxEnergyLine];
+			attackers = new GameObject[30]; //30 is temp, should be an unbound queue but I'm lazy ATM
+			underAttacks = new bool[maxEnergyLine];
+			attackings = new bool[maxEnergyLine];
 		}
 
 
@@ -191,64 +253,93 @@ namespace ProcessingUnits
 			targetChecks();
 			attackerChecks();
 			energyCreation();
-            run();
+			run();
 		}
 
-        
-        void run()
-        {
-            if((energyLineOne == null) && (targetCurrent != null))
-            {
-                drawEnergyLine(gameObject.transform, targetCurrent.transform);
-            }
 
-            if((energyLineOne != null) && (targetCurrent != null))
-            {
-                energyTransfer();
-            }
+		void run()
+		{
 
-			if(targetCurrent != targetLast)
+			for (int i = 0; i <= maxEnergyLine - 1; i++)
 			{
-				updateEnergyLine();
+				if ((energyLines[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
+				{
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], this.gameObject, targetsCurrent[i].gameObject, underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
+				}
 			}
-        }
+
+			energyTransfer();
+		}
+
+		public void updateAllLine()
+		{
+			for (int i = 0; i <= maxEnergyLine - 1; i++)
+			{
+				if (targetsCurrent[i] != null)
+				{
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], this.gameObject, targetsCurrent[i].gameObject, underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
+				}
+			}
+		}
 
 		#region checks
 		void targetChecks()
 		{
-            if(targetCurrent != null)
-            {
-               if(targetCurrent.GetComponent<processor_Script>().getTarget() == gameObject)
-                {
-                    underAttack = true;
-                }
-
-               else
-                {
-                    attacking = true;
-                }  
-            }
-
-            else
-            {
-                underAttack = false;
-                attacking = false;
-            }
-		}
-
-		void attackerChecks()
-		{
-			if(attacker != null)
+			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
 			{
-				if (attacker.GetComponent<processor_Script>().getTarget() == this.gameObject)
+				if (targetsCurrent[i] != null)
 				{
+					GameObject[] targetsTargets = targetsCurrent[i].GetComponent<processor_Script>().getTargets();
+					for (int j = 0; j <= targetsTargets.Length - 1; j++)
+					{
+						//if (targetsTargets[j] == this.gameObject)
+						//{
+						//	if (targetsCurrent[j].tag == this.gameObject.tag)
+						//	{
+						//		underAttack = false;
+						//	}
+						//	else
+						//	{
+						//		underAttacks[i] = true;
+						//	}
 
+						//}
+
+						//else
+						//{
+							attackings[i] = true;
+						//}
+					}
 				}
 
 				else
 				{
-					attacker = null;
-					underAttack = false;
+					attackings[i] = false;
+					//underAttacks[i] = false;
+				}
+			}
+		}
+
+		void attackerChecks()
+		{
+			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
+			{
+				if (attackers[i] != null)
+				{
+					//GameObject[] attackerTargets = attackers[i].GetComponent<processor_Script>().getTargets();
+					//for (int j = 0; j <= attackerTargets.Length - 1; j++)
+					//{
+					//	if (attackerTargets[j] == this.gameObject)
+					//	{
+					//		underAttacks[i] = true;
+					//	}
+					//}
+				}
+
+				else
+				{
+					attackers[i] = null;
+					//underAttacks[i] = false;
 				}
 
 			}
@@ -260,23 +351,32 @@ namespace ProcessingUnits
 		#region Pulse
 		void energyTransfer()
 		{
-			if ((timeUntilNextPulse <= 0) && (attacking = true) && (energy > 0))
+			for (int i = 0; i < energyLines.Length; i++)
 			{
-				createPulse();
-				energy--;
-				timeUntilNextPulse = energyTransferRate;
+
+				if ((energyLines[i] != null) && (targetsCurrent[i] != null))
+				{
+					if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+					{
+						createPulse(i);
+						energy--;
+						timeUntilPulse[i] = energyTransferRate;
+					}
+					timeUntilPulse[i] -= Time.deltaTime;
+				}
 			}
-			timeUntilNextPulse -= Time.deltaTime;
 		}
 
 		#region create pulse
-		void createPulse()
+		void createPulse(int targetID)
 		{
+			Debug.Log("Create Pulse");
+			Debug.Log("target ID is: " + targetID);
 			if (unitOwner == 1)
 			{
 				GameObject energyPulseGO = Instantiate(allyEnergyPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetCurrent);
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(unitOwner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
@@ -286,7 +386,7 @@ namespace ProcessingUnits
 			{
 				GameObject energyPulseGO = Instantiate(enemyEnergyPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetCurrent);
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(unitOwner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
@@ -294,7 +394,7 @@ namespace ProcessingUnits
 			}
 		}
 		#endregion
-		#region reate energy
+		#region Create energy
 		void energyCreation()
 		{
 			if ((unitOwner != 0) && (timeUntilNextEnergyCreation <= 0))
@@ -321,73 +421,6 @@ namespace ProcessingUnits
 		#endregion
 
 		#region Line
-
-		void drawEnergyLine(Transform p1, Transform p2)
-		{
-            Debug.Log("running draw line");
-            if (this.getTarget() == this.getAttacker())
-			{
-				Debug.Log("running draw line underattack");
-				if (energyLineOne != null)
-				{
-					Destroy(energyLineOne);
-				}
-
-				Vector3 midPosision = Vector3.Lerp(p1.position, p2.position, .5f);
-				Vector3 posision = Vector3.Lerp(p1.position, midPosision, .5f);
-				if (unitOwner == 1)
-				{
-					energyLineOne = Instantiate(allyEnergyLinePrefab);
-				}
-
-				if (unitOwner == -1)
-				{
-					energyLineOne = Instantiate(enemyEnergyLinePrefab);
-				}
-
-				Vector3 newScale = energyLineOne.transform.localScale;
-				newScale.z = Vector3.Distance(p1.position, midPosision);
-				energyLineOne.transform.localScale = newScale;
-				energyLineOne.transform.Translate(posision, Space.World);
-				energyLineOne.transform.LookAt(midPosision);
-				underAttack = false;
-			}
-
-
-            else
-            {
-                Debug.Log("running draw line not underattack");
-                if (energyLineOne != null)
-                {
-                    Destroy(energyLineOne);
-                }
-
-                Vector3 posision = Vector3.Lerp(p1.position, p2.position, .5f);
-                if (unitOwner == 1)
-                {
-                    energyLineOne = Instantiate(allyEnergyLinePrefab);
-                }
-
-                if (unitOwner == -1)
-                {
-                    energyLineOne = Instantiate(enemyEnergyLinePrefab);
-                }
-
-                Vector3 newScale = energyLineOne.transform.localScale;
-                newScale.z = Vector3.Distance(p1.position, p2.position);
-                energyLineOne.transform.localScale = newScale;
-                energyLineOne.transform.Translate(posision, Space.World);
-                energyLineOne.transform.LookAt(p2.transform);
-            }
-		}
-
-		public void updateEnergyLine()
-		{
-			if (targetCurrent != null)
-			{
-				drawEnergyLine(gameObject.transform, targetCurrent.transform);
-			}
-		}
 		#endregion
 
 		#endregion
@@ -442,21 +475,16 @@ namespace ProcessingUnits
 
 			else
 			{
-				Debug.Log("Attacker and deffender still set to game objects");
 			}
 		}
 
 		void OnMouseOver()
 		{
-            if (Input.GetMouseButtonDown(1))
-            {
-				Debug.Log("2");
-				if (energyLineOne != null)
-                {
-                    Destroy(energyLineOne);
-                }
+			if (Input.GetMouseButtonDown(1))
+			{
+				EL.deletEnergyLine(energyLineOne);
 
-                attacking = false;
+				attacking = false;
 				targetCurrent = null;
 			}
 		}
@@ -465,7 +493,7 @@ namespace ProcessingUnits
 
 		void OnTriggerEnter(Collider other)
 		{
-			if ((other.gameObject.tag == "EnemyEnergyPulse") && (other.gameObject.tag == "AllyEnergyPulse"))
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
 			{
 				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
 				energyPulse.setDontCollid(true);
@@ -474,7 +502,7 @@ namespace ProcessingUnits
 
 		void OnTriggerExit(Collider other)
 		{
-			if ((other.gameObject.tag == "EnemyEnergyPulse") && (other.gameObject.tag == "AllyEnergyPulse"))
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
 			{
 				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
 				energyPulse.setDontCollid(false);
