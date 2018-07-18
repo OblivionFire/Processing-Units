@@ -262,29 +262,24 @@ namespace ProcessingUnits
 
 			for (int i = 0; i <= maxEnergyLine - 1; i++)
 			{
-				//Debug.Log("i = " + i);
-				//Debug.Log("Energy Line " + i + " = ");
-				//Debug.Log(energyLines[i]);
-				//Debug.Log("Target " + i + " = ");
-				//Debug.Log(targetsCurrent[i]);
 				if ((energyLines[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
 				{
-					energyLines[i] = EL.drawEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
-				}
-
-
-
-				if (targetsCurrent[i] != targetsLast[i])
-				{
-					if (targetsCurrent[i] != null)
-					{
-						energyLines[i] = EL.updateEnergyLine(energyLines[i], underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
-					}
-					targetsLast[i] = targetsCurrent[i];
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], this.gameObject, targetsCurrent[i].gameObject, underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
 				}
 			}
 
 			energyTransfer();
+		}
+
+		public void updateAllLine()
+		{
+			for (int i = 0; i <= maxEnergyLine - 1; i++)
+			{
+				if (targetsCurrent[i] != null)
+				{
+					energyLines[i] = EL.drawEnergyLine(energyLines[i], this.gameObject, targetsCurrent[i].gameObject, underAttacks[i], unitOwner, this.transform, targetsCurrent[i].transform, i);
+				}
+			}
 		}
 
 		#region checks
@@ -297,30 +292,30 @@ namespace ProcessingUnits
 					GameObject[] targetsTargets = targetsCurrent[i].GetComponent<processor_Script>().getTargets();
 					for (int j = 0; j <= targetsTargets.Length - 1; j++)
 					{
-						if (targetsTargets[j] == this.gameObject)
-						{
-							if (targetsCurrent[j].tag == this.gameObject.tag)
-							{
-								underAttack = false;
-							}
-							else
-							{
-								underAttacks[i] = true;
-							}
+						//if (targetsTargets[j] == this.gameObject)
+						//{
+						//	if (targetsCurrent[j].tag == this.gameObject.tag)
+						//	{
+						//		underAttack = false;
+						//	}
+						//	else
+						//	{
+						//		underAttacks[i] = true;
+						//	}
 
-						}
+						//}
 
-						else
-						{
+						//else
+						//{
 							attackings[i] = true;
-						}
+						//}
 					}
 				}
 
 				else
 				{
 					attackings[i] = false;
-					underAttacks[i] = false;
+					//underAttacks[i] = false;
 				}
 			}
 		}
@@ -331,20 +326,20 @@ namespace ProcessingUnits
 			{
 				if (attackers[i] != null)
 				{
-					GameObject[] attackerTargets = attackers[i].GetComponent<processor_Script>().getTargets();
-					for (int j = 0; j <= attackerTargets.Length - 1; j++)
-					{
-						if (attackerTargets[j] == this.gameObject)
-						{
-							underAttacks[i] = true;
-						}
-					}
+					//GameObject[] attackerTargets = attackers[i].GetComponent<processor_Script>().getTargets();
+					//for (int j = 0; j <= attackerTargets.Length - 1; j++)
+					//{
+					//	if (attackerTargets[j] == this.gameObject)
+					//	{
+					//		underAttacks[i] = true;
+					//	}
+					//}
 				}
 
 				else
 				{
 					attackers[i] = null;
-					underAttacks[i] = false;
+					//underAttacks[i] = false;
 				}
 
 			}
@@ -399,7 +394,7 @@ namespace ProcessingUnits
 			}
 		}
 		#endregion
-		#region reate energy
+		#region Create energy
 		void energyCreation()
 		{
 			if ((unitOwner != 0) && (timeUntilNextEnergyCreation <= 0))
@@ -498,7 +493,7 @@ namespace ProcessingUnits
 
 		void OnTriggerEnter(Collider other)
 		{
-			if ((other.gameObject.tag == "EnemyEnergyPulse") && (other.gameObject.tag == "AllyEnergyPulse"))
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
 			{
 				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
 				energyPulse.setDontCollid(true);
@@ -507,7 +502,7 @@ namespace ProcessingUnits
 
 		void OnTriggerExit(Collider other)
 		{
-			if ((other.gameObject.tag == "EnemyEnergyPulse") && (other.gameObject.tag == "AllyEnergyPulse"))
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
 			{
 				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
 				energyPulse.setDontCollid(false);

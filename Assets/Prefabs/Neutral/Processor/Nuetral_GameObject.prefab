@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114676428869192134}
   m_Layer: 0
   m_Name: Nuetral_GameObject
-  m_TagString: EnemyComputerUnit
+  m_TagString: NuetralComputerUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,6 +133,7 @@ MonoBehaviour:
   energyCreationRate: 0
   timeUntilNextPulse: 0
   timeUntilNextEnergyCreation: 0
+  timeUntilPulse: []
   totalEnergyLines: 0
   maxEnergyLine: 0
   hoverColor: {r: 0.47794116, g: 0.47794116, b: 0.47794116, a: 0}

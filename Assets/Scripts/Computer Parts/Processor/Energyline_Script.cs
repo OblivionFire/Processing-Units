@@ -30,35 +30,35 @@ public class EnergyLine_Script : MonoBehaviour
 
 	public GameObject drawEnergyLine(GameObject energyLine, GameObject home, GameObject target, bool underAttack, int owner, Transform p1, Transform p2, int index)
 	{
-		if (underAttack)
-		{
-			deletEnergyLine(energyLine);
-			Vector3 midPosision = Vector3.Lerp(p1.position, p2.position, .5f);
-			Vector3 posision = Vector3.Lerp(p1.position, midPosision, .5f);
-			if (owner == 1)
-			{
-				energyLine = Instantiate(allyEnergyLinePrefab);
-			}
+		//if (underAttack)
+		//{
+		//	deletEnergyLine(energyLine);
+		//	Vector3 midPosision = Vector3.Lerp(p1.position, p2.position, .5f);
+		//	Vector3 posision = Vector3.Lerp(p1.position, midPosision, .5f);
+		//	if (owner == 1)
+		//	{
+		//		energyLine = Instantiate(allyEnergyLinePrefab);
+		//	}
 
-			if (owner == -1)
-			{
-				energyLine = Instantiate(enemyEnergyLinePrefab);
-			}
+		//	if (owner == -1)
+		//	{
+		//		energyLine = Instantiate(enemyEnergyLinePrefab);
+		//	}
 
-			Vector3 newScale = energyLine.transform.localScale;
-			newScale.z = Vector3.Distance(p1.position, midPosision);
-			energyLine.transform.localScale = newScale;
-			energyLine.transform.Translate(posision, Space.World);
-			energyLine.transform.LookAt(midPosision);
-			energyLine.GetComponent<EnergyLineMang_Script>().setHome(this.gameObject);
-			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
-			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
-			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
-		}
+		//	Vector3 newScale = energyLine.transform.localScale;
+		//	newScale.z = Vector3.Distance(p1.position, midPosision);
+		//	energyLine.transform.localScale = newScale;
+		//	energyLine.transform.Translate(posision, Space.World);
+		//	energyLine.transform.LookAt(midPosision);
+		//	energyLine.GetComponent<EnergyLineMang_Script>().setHome(this.gameObject);
+		//	energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+		//	energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+		//	energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
+		//}
 
 
-		else
-		{
+		//else
+		//{
 			deletEnergyLine(energyLine);
 			Vector3 posision = Vector3.Lerp(p1.position, p2.position, .5f);
 			if (owner == 1)
@@ -80,50 +80,50 @@ public class EnergyLine_Script : MonoBehaviour
 			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
 			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
 			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
-		}
+		//}
 
 		return energyLine;
 	}
 
-	public GameObject updateEnergyLine(GameObject energyLine, GameObject home, GameObject target, bool underAttack, int owner, Transform p1, Transform p2, int index)
-	{
-		if (energyLine != null)
-		{
-			energyLine.transform.position = new Vector3(0, 0, 0);
-			energyLine.transform.rotation = new Quaternion(0, 0, 0, 0);
-			if (underAttack)
-			{
-				Vector3 midPosision = Vector3.Lerp(p1.position, p2.position, .5f);
-				Vector3 posision = Vector3.Lerp(p1.position, midPosision, .5f);
-				Vector3 newScale = energyLine.transform.localScale;
-				newScale.z = Vector3.Distance(p1.position, midPosision);
-				energyLine.transform.localScale = newScale;
-				energyLine.transform.Translate(posision, Space.World);
-				energyLine.transform.LookAt(midPosision);
-				energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
-				energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
-				energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
+	//public GameObject updateEnergyLine(GameObject energyLine, GameObject home, GameObject target, bool underAttack, int owner, Transform p1, Transform p2, int index)
+	//{
+	//	if (energyLine != null)
+	//	{
+	//		energyLine.transform.position = new Vector3(0, 0, 0);
+	//		energyLine.transform.rotation = new Quaternion(0, 0, 0, 0);
+	//		if (underAttack)
+	//		{
+	//			Vector3 midPosision = Vector3.Lerp(p1.position, p2.position, .5f);
+	//			Vector3 posision = Vector3.Lerp(p1.position, midPosision, .5f);
+	//			Vector3 newScale = energyLine.transform.localScale;
+	//			newScale.z = Vector3.Distance(p1.position, midPosision);
+	//			energyLine.transform.localScale = newScale;
+	//			energyLine.transform.Translate(posision, Space.World);
+	//			energyLine.transform.LookAt(midPosision);
+	//			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+	//			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+	//			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
 
-			}
+	//		}
 
 
-			else
-			{
-				Vector3 posision = Vector3.Lerp(p1.position, p2.position, .5f);
-				Vector3 newScale = energyLine.transform.localScale;
-				newScale.z = Vector3.Distance(p1.position, p2.position);
-				energyLine.transform.localScale = newScale;
-				energyLine.transform.Translate(posision, Space.World);
-				energyLine.transform.LookAt(p2.transform);
-				energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
-				energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
-				energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
-			}
+	//		else
+	//		{
+	//			Vector3 posision = Vector3.Lerp(p1.position, p2.position, .5f);
+	//			Vector3 newScale = energyLine.transform.localScale;
+	//			newScale.z = Vector3.Distance(p1.position, p2.position);
+	//			energyLine.transform.localScale = newScale;
+	//			energyLine.transform.Translate(posision, Space.World);
+	//			energyLine.transform.LookAt(p2.transform);
+	//			energyLine.GetComponent<EnergyLineMang_Script>().setI(index);
+	//			energyLine.GetComponent<EnergyLineMang_Script>().homeProcessor = home;
+	//			energyLine.GetComponent<EnergyLineMang_Script>().targetProcessor = target;
+	//		}
 
-			return energyLine;
-		}
-		return drawEnergyLine(energyLine, home, target, underAttack, owner, p2, p2, index);
-	}
+	//		return energyLine;
+	//	}
+	//	return drawEnergyLine(energyLine, home, target, underAttack, owner, p2, p2, index);
+	//}
 
 	public void deletEnergyLine(GameObject energyLine)
 	{
