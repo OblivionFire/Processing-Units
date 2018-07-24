@@ -40,10 +40,7 @@ namespace ProcessingUnits
 
 
 		[Header("Private Veriables: GameObjects")]
-		private GameObject targetCurrent;//current target. If set to null there is not target. DO NOT ADD NULL CHECKS
-		private GameObject targetLast;//used to determin if the target has changed, if lastTarget != target you need to update things like energy line
 		private GameObject energyLineOne;//energy line
-		private GameObject attacker;//the attacking gameobject, should be made into an array at some point I think. This might all become a null issue when i start ussing thread strength
 		private GameObject[] energyLines; //array of energy Lines
 		private GameObject[] targetsCurrent;
 		private GameObject[] targetsLast;
@@ -57,8 +54,6 @@ namespace ProcessingUnits
 		processorUI_Script processorEnergyUIScript;
 
 		[Header("Private Veribales: Boolean Values")]
-		private bool underAttack;//set if the processor is under attack. GameMaster will set this if a processor sets this as a deffender
-		private bool attacking; //weather or not this processor is attacking
 		private bool[] underAttacks;
 		private bool[] attackings;
 
@@ -67,6 +62,9 @@ namespace ProcessingUnits
 
 		[Header("Private Veriable: Matrerial/Colour")]
 		private Color startColor;//Colour of the processor at start of match. Does not need to be pre-assigned, will be set in initializeValues(iN)
+
+		[Header("Private Veribles: Simple Data")]
+		private int roundRobin;//used to roundRobin energy
 
 
 		#region Energy Getter and Setter
@@ -215,6 +213,7 @@ namespace ProcessingUnits
 			maxEnergyLine = 4; //The max number of energy line an object can handle
 			energyTransferRate = .75f;//processors have a base eTR speed on one pulse per second
 			energyCreationRate = 2f;//processor have a base eCR of one energy every 2 seconds
+			roundRobin = 1;//used to round robin energy when there is less generation the demand
 			timeUntilNextPulse = 0f;//start this at 0 so processor can imediatly lunch a pulse
 			timeUntilPulse = new float[maxEnergyLine];
 			for (int i = 0; i < timeUntilPulse.Length; i++)
@@ -222,12 +221,8 @@ namespace ProcessingUnits
 				timeUntilPulse[i] = 0;
 			}
 			timeUntilNextEnergyCreation = 1f;//start this at one so there is a slight delay on the fist energy added
-			targetCurrent = null;//can't be too carful
-			targetLast = null;//can't be too carful
 			energyLineOne = null;
-			attacker = null;
 			gameMaster = gameMaster_Script.instance;//singleton patter, making sure all objects referance the same instance gameMaster script
-			underAttack = false;
 			rend = gameObject.GetComponent<Renderer>();//render attached to the processor used to set colour and material.
 			EL = this.GetComponent<EnergyLine_Script>();//get the EnergyLine_Script
 			startColor = rend.material.color;//Setting the starting color to what ever the color the object starts 
@@ -268,7 +263,23 @@ namespace ProcessingUnits
 				}
 			}
 
-			energyTransfer();
+			if ((unitOwner != 0) && (attacking()))
+			{
+				energyTransfer();
+			}
+		}
+
+		bool attacking()
+		{
+			for (int i = 0; i < energyLines.Length; i++)
+			{
+				if(energyLines[i] != null)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public void updateAllLine()
@@ -292,30 +303,13 @@ namespace ProcessingUnits
 					GameObject[] targetsTargets = targetsCurrent[i].GetComponent<processor_Script>().getTargets();
 					for (int j = 0; j <= targetsTargets.Length - 1; j++)
 					{
-						//if (targetsTargets[j] == this.gameObject)
-						//{
-						//	if (targetsCurrent[j].tag == this.gameObject.tag)
-						//	{
-						//		underAttack = false;
-						//	}
-						//	else
-						//	{
-						//		underAttacks[i] = true;
-						//	}
-
-						//}
-
-						//else
-						//{
-							attackings[i] = true;
-						//}
+						attackings[i] = true;
 					}
 				}
 
 				else
 				{
 					attackings[i] = false;
-					//underAttacks[i] = false;
 				}
 			}
 		}
@@ -324,24 +318,7 @@ namespace ProcessingUnits
 		{
 			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
 			{
-				if (attackers[i] != null)
-				{
-					//GameObject[] attackerTargets = attackers[i].GetComponent<processor_Script>().getTargets();
-					//for (int j = 0; j <= attackerTargets.Length - 1; j++)
-					//{
-					//	if (attackerTargets[j] == this.gameObject)
-					//	{
-					//		underAttacks[i] = true;
-					//	}
-					//}
-				}
-
-				else
-				{
-					attackers[i] = null;
-					//underAttacks[i] = false;
-				}
-
+				attackers[i] = null;
 			}
 		}
 		#endregion
@@ -356,22 +333,63 @@ namespace ProcessingUnits
 
 				if ((energyLines[i] != null) && (targetsCurrent[i] != null))
 				{
-					if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+					if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > maxEnergyLine))
 					{
 						createPulse(i);
 						energy--;
 						timeUntilPulse[i] = energyTransferRate;
 					}
-					timeUntilPulse[i] -= Time.deltaTime;
+
+					else if ((attackings[i] == true) && (timeUntilPulse[i] <= 0) && (energy > 0))
+					{
+						if (i == roundRobin - 1)
+						{
+							createPulse(i);
+							energy--;
+							timeUntilPulse[i] = energyTransferRate;
+
+							if (roundRobin < maxEnergyLine-1)
+							{
+								roundRobin++;
+							}
+
+							else
+							{
+								roundRobin = 1;
+							}
+						}
+					}
+				}
+				timeUntilPulse[i] -= Time.deltaTime;
+			}
+
+			if (energy < maxEnergyLine)
+			{
+				for (int i = 1; i < maxEnergyLine; i++)
+				{
+					if ((i == roundRobin) && (energyLines[i-1] == null))
+					{
+						if (roundRobin < maxEnergyLine-1)
+						{
+							roundRobin++;
+						}
+
+						else
+						{
+							roundRobin = 1;
+						}
+					}
 				}
 			}
 		}
 
+
+
+
+
 		#region create pulse
 		void createPulse(int targetID)
 		{
-			Debug.Log("Create Pulse");
-			Debug.Log("target ID is: " + targetID);
 			if (unitOwner == 1)
 			{
 				GameObject energyPulseGO = Instantiate(allyEnergyPulsePrefab, gameObject.transform);
@@ -483,9 +501,6 @@ namespace ProcessingUnits
 			if (Input.GetMouseButtonDown(1))
 			{
 				EL.deletEnergyLine(energyLineOne);
-
-				attacking = false;
-				targetCurrent = null;
 			}
 		}
 
