@@ -113,7 +113,14 @@ namespace ProcessingUnits
 		{
 			processor_Script t = target.GetComponent<processor_Script>();
 
-			if (t.tag == "NuetralComputerUnit")
+			 if (((t.tag == "EnemyComputerUnit") && (tag == "EnemyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "AllyEnergyPulse")))
+			{
+				t.setEnergyPlusX(energy);
+				Destroy(gameObject);
+				return;
+			}
+
+			else if (t.tag == "NuetralComputerUnit")
 			{
 				if (owner == 1)
 				{
@@ -149,13 +156,6 @@ namespace ProcessingUnits
 				{
 					target.tag = "AllyComputerUnit";
 				}
-			}
-
-			else if (((t.tag == "EnemyComputerUnit") && (tag == "EnemyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "AllyEnergyPulse")))
-			{
-				t.setEnergyPlusX(energy);
-				Destroy(gameObject);
-				return;
 			}
 
 			else

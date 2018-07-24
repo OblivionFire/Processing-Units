@@ -19,15 +19,7 @@ namespace ProcessingUnits
 
 		public void setAttacker(GameObject attackerX)
 		{
-			if (attackerX != null)
-			{
 				attacker = attackerX;
-			}
-
-			else
-			{
-				Debug.Log("attacker does not equal null");
-			}
 		}
 
 		public GameObject getAttacker()
@@ -40,15 +32,7 @@ namespace ProcessingUnits
 
 		public void setDeffender(GameObject deffenderX)
 		{
-			if (deffenderX != null)
-			{
 				deffender = deffenderX;
-			}
-
-			else
-			{
-				Debug.Log("Deffender does not equal null");
-			}
 		}
 
 		public GameObject getDeffender()
@@ -74,17 +58,7 @@ namespace ProcessingUnits
 
 
 		void initializeValues()
-		{
-			GameObject ally = Instantiate(processorAllyPrefab);
-			GameObject enemy = Instantiate(processorEnemyPrefab);
-			processor_Script allyScript = ally.GetComponent<processor_Script>();
-			processor_Script enemyScript = enemy.GetComponent<processor_Script>();
-			allyScript.setEnergy(9);
-			enemyScript.setEnergy(9);
-			allyScript.setUnitOwner(1);
-			enemyScript.setUnitOwner(-1);
-			allyScript.hoverColor = processorAllyPrefab.GetComponent<processor_Script>().hoverColor;
-			enemyScript.hoverColor = processorEnemyPrefab.GetComponent<processor_Script>().hoverColor;
+		{ 
 
 		}
 
@@ -116,6 +90,12 @@ namespace ProcessingUnits
 			{
 				Debug.Log("Deffender is null");
 				return;
+			}
+
+			else if(attackerScript.getUnitOwner() == 0)
+			{
+				attacker = null;
+				deffender = null;
 			}
 
 			else
