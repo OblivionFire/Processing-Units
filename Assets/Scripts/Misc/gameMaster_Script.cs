@@ -19,15 +19,7 @@ namespace ProcessingUnits
 
 		public void setAttacker(GameObject attackerX)
 		{
-			if (attackerX != null)
-			{
 				attacker = attackerX;
-			}
-
-			else
-			{
-				Debug.Log("attacker does not equal null");
-			}
 		}
 
 		public GameObject getAttacker()
@@ -40,15 +32,7 @@ namespace ProcessingUnits
 
 		public void setDeffender(GameObject deffenderX)
 		{
-			if (deffenderX != null)
-			{
 				deffender = deffenderX;
-			}
-
-			else
-			{
-				Debug.Log("Deffender does not equal null");
-			}
 		}
 
 		public GameObject getDeffender()
@@ -106,6 +90,12 @@ namespace ProcessingUnits
 			{
 				Debug.Log("Deffender is null");
 				return;
+			}
+
+			else if(attackerScript.getUnitOwner() == 0)
+			{
+				attacker = null;
+				deffender = null;
 			}
 
 			else

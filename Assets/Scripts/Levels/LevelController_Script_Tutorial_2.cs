@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 namespace ProcessingUnits
@@ -10,6 +10,9 @@ namespace ProcessingUnits
 		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
 		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spawn in levels
 		public GameObject processorNuetralPrefab;//Nuetral processor prefab used to spawn in levels
+		private GameObject[] processors;
+		private bool[] complete;
+		private float endCount;
 
 		//[Header("Private Veriable: GameObjects")]
 		//Private Veriables
@@ -17,10 +20,13 @@ namespace ProcessingUnits
 		void initializeValues()
 		{
 			{
-				GameObject Ally_1 = createProcessor(processorAllyPrefab, 9, 1, -1, 0, 0);
-				GameObject Enemy_1 = createProcessor(processorEnemyPrefab, 4, -1, 5, 0, 0);
-				GameObject Nuetral_1 = createProcessor(processorNuetralPrefab, 0, 0, 2, 0, 2);
-				GameObject Nuetral_2 = createProcessor(processorNuetralPrefab, 0, 0, 2, 0, -3);
+				endCount = 2;
+				processors = new GameObject[4];
+				complete = new bool[4];
+				processors[0] = createProcessor(processorAllyPrefab, 9, 1, -1, 0, 0);
+				processors[1] = createProcessor(processorEnemyPrefab, 4, -1, 5, 0, 0);
+				processors[2] = createProcessor(processorNuetralPrefab, 0, 0, 2, 0, 2);
+				processors[3] = createProcessor(processorNuetralPrefab, 0, 0, 2, 0, -3);
 
 
 			}
@@ -59,7 +65,49 @@ namespace ProcessingUnits
 
 		void Update()
 		{
+			checkLevel(processors);
+			levelComplete(complete);
+		}
 
+		void levelComplete(bool[] checks)
+		{
+			bool nextLevel = true;
+			foreach (bool check in checks)
+			{
+				if (check == false)
+				{
+					nextLevel = false;
+				}
+			}
+
+			if (nextLevel == true)
+			{
+				if (endCount > 0)
+				{
+					endCount -= Time.deltaTime;
+				}
+
+				else
+				{
+					SceneManager.LoadScene("V1.4.0");
+				}
+			}
+		}
+
+		void checkLevel(GameObject[] processors)
+		{
+			for (int i = 0; i < processors.Length; i++)
+			{
+				if ((processors[i].GetComponent<processor_Script>().getUnitOwner() == 1) || (processors[i].GetComponent<processor_Script>().getUnitOwner() == 0))
+				{
+					complete[i] = true;
+				}
+
+				else
+				{
+					complete[i] = false;
+				}
+			}
 		}
 	}
 }
