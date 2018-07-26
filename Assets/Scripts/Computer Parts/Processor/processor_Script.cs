@@ -56,6 +56,7 @@ namespace ProcessingUnits
 		[Header("Private Veribales: Boolean Values")]
 		private bool[] underAttacks;
 		private bool[] attackings;
+		private bool powered; //is the chip reciving power
 
 		[Header("Private Veriables: Render")]
 		private Renderer rend;//render attached to this script, use to set colour and material
