@@ -103,10 +103,8 @@ namespace ProcessingUnits
 				if(attacker != deffender)
 				{
 					attackerScript.setTarget(deffender);
-					deffenderScript.setAttackers(attacker);
 					attackerScript.removeEnergyLine();
 					deffenderScript.removeEnergyLine();
-					//attackerScript.setAttacking(true);
 					attacker = null;
 					deffender = null;
 				}

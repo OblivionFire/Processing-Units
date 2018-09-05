@@ -172,16 +172,6 @@ namespace ProcessingUnits
 			}
 		}
 
-		//public GameObject getAttacker()
-		//{
-		//	return attacker;
-		//}
-
-		//public void setAttacking(bool attackingX)
-		//{
-		//	attacking = attackingX;
-		//}
-
 		#endregion
 		#region colour/material setters/getters
 

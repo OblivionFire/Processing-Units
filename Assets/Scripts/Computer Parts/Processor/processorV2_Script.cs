@@ -5,7 +5,7 @@ namespace ProcessingUnits
 {
 	public class processorV2_Script : MonoBehaviour
 	{
-
+		#region Veriables
 		[Header("Object Stats: Data")]
 		private int data;//how much data has been stored in the processor
 		private int owner;//0 is neurtral, 1 is ally, -1 enemy
@@ -14,23 +14,39 @@ namespace ProcessingUnits
 		private int roundRobin;//used to roundRobin data
 
 		[Header("Object Stats: Power")]
-		private float power;//0.0<=x<=2.0
+		private float power;//0.0<=x<=3.0
 
 		[Header("Object Stats: Heat")]
 		private int heat;//0<=x<=100 100 = shut down  65-85 is sweet spot
+
 
 		[Header("Object Stats: Count Downs")]
 		private float[] timeUntilPulse;//time until the next data pulse for each line
 		private float dataCycle;//the time until data is created again
 		private int maxThreads;//the max number of data lines
-		#region Veriables
+
 		[Header("Unity Presets: Materials/Colours")]
 		public Color hoverColor;//Colour of the processor when moused over
 		private Color startColor;//Colour of the processor at start of match. Does not need to be pre-assigned, will be set in initializeValues(iN)
 		public Material allyProcessor_Material;//ally Processor material.
 		public Material nuetralProcessor_Material;//nuetral processor material.
 		public Material enemyProcessor_Material;// enemy processor material.
+		void initializeValues()
+		{
+			data = 0;
+			owner = 0;
+			DataTrans = 0.75f;
+			dataCreate = 2;
+			roundRobin = 1;
+			power = 1;
+			heat = 0;
+			maxThreads = 4;
+			dataCycle = 0;
+			timeUntilPulse = new float[maxThreads];
+			for (int i = 0; i < maxThreads; i++)
+				timeUntilPulse[i] = 0;
 
+		}
 		[Header("Unity Presets: GameObjects")]
 		public GameObject allyDataPulsePrefab;//object used to visualize data transfer
 		public GameObject allyThreadPrefab;//the 'thread' data moves over
@@ -127,18 +143,32 @@ namespace ProcessingUnits
 		}
 
 		#endregion
+		#region ObjectStats: Color
+		public Color StartColor
+		{
+			get { return startColor; }
+			set
+			{
+				startColor = value;
+			}
+		}
+		#endregion
 		#region Threads and Targets
 
-
-
-		#endregion
-
-		#endregion
-
-		void initializeValues()
+		public GameObject GetTarget(int i)
 		{
-
+			 return targetsCurrent[i];
 		}
+
+		public GameObject[] TargetsCurrent
+		{
+			get { return targetsCurrent; }
+		}
+
+		#endregion
+
+		#endregion
+
 
 
 		void Start()
