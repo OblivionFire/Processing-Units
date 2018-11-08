@@ -284,7 +284,7 @@ namespace ProcessingUnits
 			}
 		}
 
-		#region checks
+#region checks
 		void targetChecks()
 		{
 			for (int i = 0; i <= targetsCurrent.Length - 1; i++)

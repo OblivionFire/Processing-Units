@@ -11,7 +11,7 @@ namespace ProcessingUnits
 
 		[Header("Private Veriables")]
 		private int i;
-		private ProcessingUnits.processor_Script home;
+		private processorV2_Script home;
 		public GameObject homeProcessor;
 		public GameObject targetProcessor;
 
@@ -25,7 +25,7 @@ namespace ProcessingUnits
 		{
 			if (homeX != null)
 			{
-				home = homeX.GetComponent<ProcessingUnits.processor_Script>();
+				home = homeX.GetComponent<ProcessingUnits.processorV2_Script>();
 			}
 		}
 

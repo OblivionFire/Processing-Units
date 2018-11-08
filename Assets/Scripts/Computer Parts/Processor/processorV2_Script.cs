@@ -31,22 +31,7 @@ namespace ProcessingUnits
 		public Material allyProcessor_Material;//ally Processor material.
 		public Material nuetralProcessor_Material;//nuetral processor material.
 		public Material enemyProcessor_Material;// enemy processor material.
-		void initializeValues()
-		{
-			data = 0;
-			owner = 0;
-			DataTrans = 0.75f;
-			dataCreate = 2;
-			roundRobin = 1;
-			power = 1;
-			heat = 0;
-			maxThreads = 4;
-			dataCycle = 0;
-			timeUntilPulse = new float[maxThreads];
-			for (int i = 0; i < maxThreads; i++)
-				timeUntilPulse[i] = 0;
 
-		}
 		[Header("Unity Presets: GameObjects")]
 		public GameObject allyDataPulsePrefab;//object used to visualize data transfer
 		public GameObject allyThreadPrefab;//the 'thread' data moves over
@@ -63,7 +48,7 @@ namespace ProcessingUnits
 
 		[Header("Private Veriables: Scripts")]
 		private processorUI_Script processorUIScript; //ATTACH CANVAS AND TEXT TO PROCESSOR PRESET
-		private EnergyLine_Script EL;//energy line script of the processor
+		private EnergyLine_Script ELS;//energy line script of the processor
 		gameMaster_Script gameMaster;
 		processorUI_Script processorEnergyUIScript;
 
@@ -165,21 +150,283 @@ namespace ProcessingUnits
 			get { return targetsCurrent; }
 		}
 
-		#endregion
+		public void setTarget(GameObject targetX, int i)
+		{
+			targetsCurrent[i] = targetX;
+		}
+		public void setTarget(GameObject targetsX)
+		{
+			if (targetsX != null)
+			{
+				for (int i = 0; i <= maxThreads - 1; i++)
+				{
+					if (targetsX != null)
+					{
+						if (targetsCurrent[i] == null)
+						{
+							targetsCurrent[i] = targetsX;
+							targetsX = null;
+						}
+					}
+				}
+
+				if (targetsX != null)
+				{
+					targetsCurrent[1] = targetsX;
+				}
+			}
+		}
 
 		#endregion
 
+		#endregion
 
+		void initializeValues()
+		{
+			data = 0;
+			owner = 0;
+			DataTrans = 0.75f;
+			dataCreate = 2;
+			roundRobin = 1;
+			power = 1;
+			heat = 0;
+			maxThreads = 4;
+			dataCycle = 0;
+			timeUntilPulse = new float[maxThreads];
+			for (int i = 0; i < maxThreads; i++)
+				timeUntilPulse[i] = 0;
+			dataCreate = 1f;
+			gameMaster = gameMaster_Script.instance;
+			rend = gameMaster.GetComponent<Renderer>();
+			ELS = this.GetComponent<EnergyLine_Script>();
+			startColor = rend.material.color;
+			threads = new GameObject[maxThreads];
+			targetsCurrent = new GameObject[maxThreads];
+			targetsLast = new GameObject[maxThreads];
+
+
+		}
 
 		void Start()
 		{
 			initializeValues();
+			setMaterial();
+			
 		}
 
 
 		void Update()
 		{
-
+			dataCreation();
+			run();
 		}
+
+		void run()
+		{
+
+			for (int i = 0; i <= maxThreads - 1; i++)
+			{
+				if ((threads[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
+				{
+					threads[i] = ELS.drawEnergyLine(threads[i], this.gameObject, targetsCurrent[i].gameObject, false, owner, this.transform, targetsCurrent[i].transform, i);
+				}
+			}
+
+			if ((owner != 0) && (attacking()))
+			{
+				energyTransfer();
+			}
+		}
+
+		#region Data
+
+		#region Pulse
+		void energyTransfer()
+		{
+			for (int i = 0; i < threads.Length; i++)
+			{
+
+				if ((threads[i] != null) && (targetsCurrent[i] != null))
+				{
+					if ((targetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > maxThreads))
+					{
+						createPulse(i);
+						data--;
+						timeUntilPulse[i] = dataTrans;
+					}
+
+					else if ((targetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0))
+					{
+						if (i == roundRobin - 1)
+						{
+							createPulse(i);
+							data--;
+							timeUntilPulse[i] = dataTrans;
+
+							if (roundRobin < maxThreads - 1)
+							{
+								roundRobin++;
+							}
+
+							else
+							{
+								roundRobin = 1;
+							}
+						}
+					}
+				}
+				timeUntilPulse[i] -= Time.deltaTime;
+			}
+
+			if (data < maxThreads)
+			{
+				for (int i = 1; i < threads.Length; i++)
+				{
+					if ((i == roundRobin) && (threads[i - 1] == null))
+					{
+						if (roundRobin < maxThreads - 1)
+						{
+							roundRobin++;
+						}
+
+						else
+						{
+							roundRobin = 1;
+						}
+					}
+				}
+			}
+		}
+		#region Create Data
+		void dataCreation()
+		{
+			if ((owner != 0) && (dataCycle <= 0))
+			{
+				data++;
+				dataCycle = dataCreate * 1;
+			}
+
+			dataCycle -= Time.deltaTime;
+		}
+		#endregion
+		#region create pulse
+		void createPulse(int targetID)
+		{
+			if (owner == 1)
+			{
+				GameObject energyPulseGO = Instantiate(allyDataPulsePrefab, gameObject.transform);
+				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
+				energyPulseGoScript.setOwner(owner);
+				energyPulseGoScript.setOwnerHoverColor(hoverColor);
+				energyPulseGoScript.setOwnerStartColor(startColor);
+			}
+
+			if (owner == -1)
+			{
+				GameObject energyPulseGO = Instantiate(enemyDataPulsePrefab, gameObject.transform);
+				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
+				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
+				energyPulseGoScript.setOwner(owner);
+				energyPulseGoScript.setOwnerHoverColor(hoverColor);
+				energyPulseGoScript.setOwnerStartColor(startColor);
+
+			}
+		}
+
+		#endregion
+		#endregion
+		#endregion
+		#region Misc.
+
+		public void setMaterial()
+		{
+			if (owner == 1)
+			{
+				rend.material = allyProcessor_Material;
+				return;
+			}
+
+			if (owner == -1)
+			{
+				rend.material = enemyProcessor_Material;
+				return;
+			}
+
+			else
+			{
+				rend.material = nuetralProcessor_Material;
+			}
+		}
+
+		bool attacking()
+		{
+			//Used to not run energyTrans when uncessisary
+			for (int i = 0; i < threads.Length; i++)
+			{
+				if (threads[i] != null)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		#region Mouse
+
+		void OnMouseEnter()
+		{
+
+			rend.material.color = hoverColor;
+		}
+
+		void OnMouseExit()
+		{
+			rend.material.color = startColor;
+		}
+
+		void OnMouseDown()
+		{
+			if (gameMaster.getAttacker() == null)
+			{
+				gameMaster.setAttacker(gameObject);
+				return;
+			}
+
+			if ((gameMaster.getAttacker() != null) && (gameMaster.getDeffender() == null))
+			{
+				gameMaster.setDeffender(gameObject);
+				gameMaster.initializeAttack();
+				return;
+			}
+
+			else
+			{
+			}
+		}
+
+
+		#endregion
+
+		void OnTriggerEnter(Collider other)
+		{
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
+			{
+				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
+				energyPulse.setDontCollid(true);
+			}
+		}
+
+		void OnTriggerExit(Collider other)
+		{
+			if ((other.gameObject.tag == "EnemyEnergyPulse") || (other.gameObject.tag == "AllyEnergyPulse"))
+			{
+				energyPulse_Script energyPulse = other.gameObject.GetComponent<energyPulse_Script>();
+				energyPulse.setDontCollid(false);
+			}
+		}
+
+		#endregion
 	}
 }
