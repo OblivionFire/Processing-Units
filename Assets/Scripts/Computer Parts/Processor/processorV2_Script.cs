@@ -197,7 +197,7 @@ namespace ProcessingUnits
 				timeUntilPulse[i] = 0;
 			dataCreate = 1f;
 			gameMaster = gameMaster_Script.instance;
-			rend = gameMaster.GetComponent<Renderer>();
+			rend = gameObject.GetComponent<Renderer>();
 			ELS = this.GetComponent<EnergyLine_Script>();
 			startColor = rend.material.color;
 			threads = new GameObject[maxThreads];
