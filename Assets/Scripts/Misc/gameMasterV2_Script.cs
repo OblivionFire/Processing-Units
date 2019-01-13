@@ -3,11 +3,11 @@ using TMPro;
 
 namespace ProcessingUnits
 {
-	public class gameMaster_Script : MonoBehaviour
+	public class gameMasterV2_Script : MonoBehaviour
 	{
 
 		[Header("Object Stats")]
-		public static gameMaster_Script instance;//singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
+		public static gameMasterV2_Script instance;//singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
 		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
 		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spwn in levels
 
@@ -19,7 +19,7 @@ namespace ProcessingUnits
 
 		public void setAttacker(GameObject attackerX)
 		{
-				attacker = attackerX;
+			attacker = attackerX;
 		}
 
 		public GameObject getAttacker()
@@ -32,7 +32,7 @@ namespace ProcessingUnits
 
 		public void setDeffender(GameObject deffenderX)
 		{
-				deffender = deffenderX;
+			deffender = deffenderX;
 		}
 
 		public GameObject getDeffender()
@@ -58,7 +58,7 @@ namespace ProcessingUnits
 
 
 		void initializeValues()
-		{ 
+		{
 
 		}
 
@@ -76,9 +76,14 @@ namespace ProcessingUnits
 
 		public void initializeAttack()
 		{
-			processor_Script attackerScript = attacker.GetComponent<processor_Script>();
-			processor_Script deffenderScript = deffender.GetComponent<processor_Script>();
+			processorV2_Script attackerScript = attacker.GetComponent<processorV2_Script>();
+			processorV2_Script deffenderScript = deffender.GetComponent<processorV2_Script>();
 			#region Attcker/Deffender Null Checks
+
+
+			//Debug.Log("Attacker script: " + attackerScript);
+			//Debug.Log("Deffender script: " + deffenderScript);
+
 
 			if (attacker == null)
 			{
@@ -92,7 +97,7 @@ namespace ProcessingUnits
 				return;
 			}
 
-			else if(attackerScript.getUnitOwner() == 0)
+			else if (attackerScript.getOwner() == 0)
 			{
 				attacker = null;
 				deffender = null;
@@ -100,11 +105,9 @@ namespace ProcessingUnits
 
 			else
 			{
-				if(attacker != deffender)
+				if (attacker != deffender)
 				{
 					attackerScript.setTarget(deffender);
-					attackerScript.removeEnergyLine();
-					deffenderScript.removeEnergyLine();
 					attacker = null;
 					deffender = null;
 				}

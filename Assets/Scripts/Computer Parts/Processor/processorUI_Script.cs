@@ -9,7 +9,7 @@ namespace ProcessingUnits
 	{
 		public TextMeshProUGUI energyUI;
 		private GameObject processor;
-		private processor_Script processorScript;
+		private processorV2_Script processorScript;
 		int processorEnergy;
 
 
@@ -28,12 +28,12 @@ namespace ProcessingUnits
 		{
 			if ((processorScript == null) && (processor != null))
 			{ 
-				processorScript = processor.GetComponent<processor_Script>();
+				processorScript = processor.GetComponent<processorV2_Script>();
 			}
 
 			if (processorScript != null)
 			{
-				processorEnergy = processorScript.getEnergy();
+				processorEnergy = processorScript.getData();
 				energyUI.text = processorEnergy.ToString();
 			}
 		}

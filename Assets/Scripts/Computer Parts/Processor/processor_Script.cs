@@ -172,16 +172,6 @@ namespace ProcessingUnits
 			}
 		}
 
-		//public GameObject getAttacker()
-		//{
-		//	return attacker;
-		//}
-
-		//public void setAttacking(bool attackingX)
-		//{
-		//	attacking = attackingX;
-		//}
-
 		#endregion
 		#region colour/material setters/getters
 
@@ -294,7 +284,7 @@ namespace ProcessingUnits
 			}
 		}
 
-		#region checks
+#region checks
 		void targetChecks()
 		{
 			for (int i = 0; i <= targetsCurrent.Length - 1; i++)
