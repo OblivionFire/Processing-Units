@@ -11,11 +11,11 @@ namespace ProcessingUnits
 		//[Header("Unity Presets")]
 
 		[Header("Private Veriables")]
-		gameMaster_Script gameMaster;
+		gameMasterV2_Script gameMaster;
 
 		void initializeValues()
 		{
-			gameMaster = gameMaster_Script.instance;
+			gameMaster = gameMasterV2_Script.instance;
 		}
 
 
@@ -32,7 +32,6 @@ namespace ProcessingUnits
 
 		private void OnMouseDown()
 		{
-			gameMaster.setAttacker(null);
 			gameMaster.setDeffender(null);
 		}
 	}

@@ -7,10 +7,8 @@ namespace ProcessingUnits
 	{
 		#region Veriables
 		[Header("Object Stats: Data")]
-		private int data;//how much data has been stored in the processor
-		private int owner;//0 is neurtral, 1 is ally, -1 enemy
-		private float dataTrans;//how fast the processor can send data
-		private float dataCreate;//how fast the processor can create data
+		private int data;//how much data has been stored in the 
+		private int owner;
 		private int roundRobin;//used to roundRobin data
 
 		[Header("Object Stats: Power")]
@@ -27,7 +25,7 @@ namespace ProcessingUnits
 
 		[Header("Unity Presets: Materials/Colours")]
 		public Color hoverColor;//Colour of the processor when moused over
-		private Color startColor;//Colour of the processor at start of match. Does not need to be pre-assigned, will be set in initializeValues(iN)
+		public Color startColor;//colour of the processor when the round is started
 		public Material allyProcessor_Material;//ally Processor material.
 		public Material nuetralProcessor_Material;//nuetral processor material.
 		public Material enemyProcessor_Material;// enemy processor material.
@@ -43,13 +41,12 @@ namespace ProcessingUnits
 
 		[Header("Private Veriables: GameObjects")]
 		private GameObject[] threads;//array of threads
-		private GameObject[] targetsCurrent;//A list of current targets
 		private GameObject[] targetsLast;//A list of prev. targets, may or may not be used. Hopefully line updates will be done by the GameMaster
 
 		[Header("Private Veriables: Scripts")]
 		private processorUI_Script processorUIScript; //ATTACH CANVAS AND TEXT TO PROCESSOR PRESET
 		private EnergyLine_Script ELS;//energy line script of the processor
-		gameMaster_Script gameMaster;
+		gameMasterV2_Script gameMaster;
 		processorUI_Script processorEnergyUIScript;
 
 		[Header("Private Veribales: Boolean Values")]
@@ -63,22 +60,31 @@ namespace ProcessingUnits
 
 		#region ObjectStats: Data
 
-		public int Data
+		public void setData(int dataX)
 		{
-			get { return data; }
-			set
-			{
-				if (value >= 0)
+				if (dataX >= 0)
 				{
-					data = value;
+					data = dataX;
 				}
-			}
 		}
-		public int Owner
+		public void setDataPlus(int dataX)
 		{
-			get { return owner; }
-			set { owner = value; }
+			data += dataX;
 		}
+		public int getData()
+		{
+			return data;
+		}
+
+		public void setOwner(int ownerX)
+		{
+			owner = ownerX;
+		}
+		public int getOwner()
+		{
+			return owner;
+		}
+
 		public int RoundRobin
 		{
 			get { return roundRobin; }
@@ -91,16 +97,8 @@ namespace ProcessingUnits
 
 			}
 		}
-		public float DataTrans
-		{
-			get { return dataTrans; }
-			set { dataTrans = value; }
-		}
-		public float DataCreate
-		{
-			get { return dataCreate; }
-			set { dataCreate = value; }
-		}
+		public float DataTrans { get; set; }
+		public float DataCreate { get; set; }
 
 		#endregion
 		#region ObjectStats: Power
@@ -129,30 +127,36 @@ namespace ProcessingUnits
 
 		#endregion
 		#region ObjectStats: Color
-		public Color StartColor
+		public void setStartColor(Color startColorX)
 		{
-			get { return startColor; }
-			set
-			{
-				startColor = value;
-			}
+			startColor = startColorX;
+		}
+		public Color getStartColor()
+		{
+			return startColor;
+		}
+
+		public void setHoverColor(Color hoverColorX)
+		{
+			hoverColor = hoverColorX;
+		}
+		public Color getHoverColor()
+		{
+			return hoverColor;
 		}
 		#endregion
 		#region Threads and Targets
 
 		public GameObject GetTarget(int i)
 		{
-			 return targetsCurrent[i];
+			return TargetsCurrent[i];
 		}
 
-		public GameObject[] TargetsCurrent
-		{
-			get { return targetsCurrent; }
-		}
+		public GameObject[] TargetsCurrent { get; private set; }
 
 		public void setTarget(GameObject targetX, int i)
 		{
-			targetsCurrent[i] = targetX;
+			TargetsCurrent[i] = targetX;
 		}
 		public void setTarget(GameObject targetsX)
 		{
@@ -162,9 +166,9 @@ namespace ProcessingUnits
 				{
 					if (targetsX != null)
 					{
-						if (targetsCurrent[i] == null)
+						if (TargetsCurrent[i] == null)
 						{
-							targetsCurrent[i] = targetsX;
+							TargetsCurrent[i] = targetsX;
 							targetsX = null;
 						}
 					}
@@ -172,7 +176,7 @@ namespace ProcessingUnits
 
 				if (targetsX != null)
 				{
-					targetsCurrent[1] = targetsX;
+					TargetsCurrent[1] = targetsX;
 				}
 			}
 		}
@@ -184,9 +188,8 @@ namespace ProcessingUnits
 		void initializeValues()
 		{
 			data = 0;
-			owner = 0;
 			DataTrans = 0.75f;
-			dataCreate = 2;
+			DataCreate = 2;
 			roundRobin = 1;
 			power = 1;
 			heat = 0;
@@ -195,15 +198,15 @@ namespace ProcessingUnits
 			timeUntilPulse = new float[maxThreads];
 			for (int i = 0; i < maxThreads; i++)
 				timeUntilPulse[i] = 0;
-			dataCreate = 1f;
-			gameMaster = gameMaster_Script.instance;
+			DataCreate = 1f;
+			gameMaster = gameMasterV2_Script.instance;
 			rend = gameObject.GetComponent<Renderer>();
 			ELS = this.GetComponent<EnergyLine_Script>();
 			startColor = rend.material.color;
+			Instantiate(processorUICanvasPrefab, transform);//The UI element that displays the processor Energy
 			threads = new GameObject[maxThreads];
-			targetsCurrent = new GameObject[maxThreads];
+			TargetsCurrent = new GameObject[maxThreads];
 			targetsLast = new GameObject[maxThreads];
-
 
 		}
 
@@ -211,12 +214,13 @@ namespace ProcessingUnits
 		{
 			initializeValues();
 			setMaterial();
-			
+
 		}
 
 
 		void Update()
 		{
+			Debug.Log(this + "Owner: " + owner);
 			dataCreation();
 			run();
 		}
@@ -226,9 +230,9 @@ namespace ProcessingUnits
 
 			for (int i = 0; i <= maxThreads - 1; i++)
 			{
-				if ((threads[i] == null) && (targetsCurrent[i] != null) && (targetsCurrent[i] != targetsLast[i]))
+				if ((threads[i] == null) && (TargetsCurrent[i] != null) && (TargetsCurrent[i] != targetsLast[i]))
 				{
-					threads[i] = ELS.drawEnergyLine(threads[i], this.gameObject, targetsCurrent[i].gameObject, false, owner, this.transform, targetsCurrent[i].transform, i);
+					threads[i] = ELS.drawEnergyLine(threads[i], this.gameObject, TargetsCurrent[i].gameObject, false, owner, this.transform, TargetsCurrent[i].transform, i);
 				}
 			}
 
@@ -246,22 +250,22 @@ namespace ProcessingUnits
 			for (int i = 0; i < threads.Length; i++)
 			{
 
-				if ((threads[i] != null) && (targetsCurrent[i] != null))
+				if ((threads[i] != null) && (TargetsCurrent[i] != null))
 				{
-					if ((targetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > maxThreads))
+					if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > maxThreads))
 					{
 						createPulse(i);
 						data--;
-						timeUntilPulse[i] = dataTrans;
+						timeUntilPulse[i] = DataTrans;
 					}
 
-					else if ((targetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0))
+					else if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0))
 					{
 						if (i == roundRobin - 1)
 						{
 							createPulse(i);
 							data--;
-							timeUntilPulse[i] = dataTrans;
+							timeUntilPulse[i] = DataTrans;
 
 							if (roundRobin < maxThreads - 1)
 							{
@@ -303,7 +307,7 @@ namespace ProcessingUnits
 			if ((owner != 0) && (dataCycle <= 0))
 			{
 				data++;
-				dataCycle = dataCreate * 1;
+				dataCycle = DataCreate * 1;
 			}
 
 			dataCycle -= Time.deltaTime;
@@ -316,19 +320,19 @@ namespace ProcessingUnits
 			{
 				GameObject energyPulseGO = Instantiate(allyDataPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
+				energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(owner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
-				energyPulseGoScript.setOwnerStartColor(startColor);
+				energyPulseGoScript.setOwnerHoverColor(startColor);
 			}
 
 			if (owner == -1)
 			{
 				GameObject energyPulseGO = Instantiate(enemyDataPulsePrefab, gameObject.transform);
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
-				energyPulseGoScript.setTarget(targetsCurrent[targetID]);
+				energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(owner);
-				energyPulseGoScript.setOwnerHoverColor(hoverColor);
+				energyPulseGoScript.setOwnerStartColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
 
 			}
@@ -344,13 +348,12 @@ namespace ProcessingUnits
 			if (owner == 1)
 			{
 				rend.material = allyProcessor_Material;
-				return;
+
 			}
 
-			if (owner == -1)
+			else if (owner == -1)
 			{
 				rend.material = enemyProcessor_Material;
-				return;
 			}
 
 			else
@@ -383,7 +386,22 @@ namespace ProcessingUnits
 
 		void OnMouseExit()
 		{
-			rend.material.color = startColor;
+			if (owner == 1)
+			{
+				rend.material = allyProcessor_Material;
+			}
+
+			else if (owner == -1)
+			{
+				rend.material = enemyProcessor_Material;
+			}
+
+
+			else
+			{
+				rend.material = nuetralProcessor_Material;
+			}
+			//rend.material.color = StartColor;
 		}
 
 		void OnMouseDown()

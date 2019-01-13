@@ -97,7 +97,7 @@ namespace ProcessingUnits
 				return;
 			}
 
-			else if (attackerScript.Owner == 0)
+			else if (attackerScript.getOwner() == 0)
 			{
 				attacker = null;
 				deffender = null;

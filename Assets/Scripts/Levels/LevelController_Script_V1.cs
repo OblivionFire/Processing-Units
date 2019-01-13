@@ -36,9 +36,8 @@ namespace ProcessingUnits
 			GameObject temp = Instantiate(prefab);
 			temp.transform.position = new Vector3(x, y, z);
 			processorV2_Script script = temp.GetComponent<processorV2_Script>();
-			script.Data = energy;
-			script.Owner = owner;
-
+			script.setData(energy);
+			script.setOwner(owner);
 			if (owner == 1)
 			{
 				script.hoverColor = processorAllyPrefab.GetComponent<processorV2_Script>().hoverColor;
@@ -89,7 +88,7 @@ namespace ProcessingUnits
 		{
 			for (int i = 0; i < processors.Length; i++)
 			{
-				if((processors[i].GetComponent<processorV2_Script>().Owner == 1) || (processors[i].GetComponent<processorV2_Script>().Owner == 0))
+				if((processors[i].GetComponent<processorV2_Script>().getOwner() == 1) || (processors[i].GetComponent<processorV2_Script>().getOwner() == 0))
 				{
 					complete[i] = true;
 				}

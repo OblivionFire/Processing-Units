@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23cc25c198834b468c6307614006dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverColor: {r: 0, g: 0, b: 0, a: 0}
+  hoverColor: {r: 0.14181446, g: 0.15885419, b: 0.44852942, a: 0}
   allyProcessor_Material: {fileID: 2100000, guid: 67a24d60277ae7c4ba9d3a307229f910,
     type: 2}
   nuetralProcessor_Material: {fileID: 2100000, guid: 42905c6fd4170a34ca4560f92cf27356,
