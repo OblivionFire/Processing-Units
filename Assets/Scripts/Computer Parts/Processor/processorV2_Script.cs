@@ -62,14 +62,17 @@ namespace ProcessingUnits
 
 		public void setData(int dataX)
 		{
-				if (dataX >= 0)
-				{
-					data = dataX;
-				}
+			if ((dataX >= 0) && (dataX < 100))
+			{
+				data = dataX;
+			}
 		}
 		public void setDataPlus(int dataX)
 		{
-			data += dataX;
+			if (data + dataX < 100)
+			{
+				data += dataX;
+			}
 		}
 		public int getData()
 		{
@@ -304,7 +307,7 @@ namespace ProcessingUnits
 		#region Create Data
 		void dataCreation()
 		{
-			if ((owner != 0) && (dataCycle <= 0))
+			if ((owner != 0) && (dataCycle <= 0) && (data < 99))
 			{
 				data++;
 				dataCycle = DataCreate * 1;
@@ -323,7 +326,7 @@ namespace ProcessingUnits
 				energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(owner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
-				energyPulseGoScript.setOwnerHoverColor(startColor);
+				energyPulseGoScript.setOwnerStartColor(startColor);
 			}
 
 			if (owner == -1)
@@ -332,7 +335,7 @@ namespace ProcessingUnits
 				energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
 				energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
 				energyPulseGoScript.setOwner(owner);
-				energyPulseGoScript.setOwnerStartColor(hoverColor);
+				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
 
 			}
