@@ -235,11 +235,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15d86e29221223349b0226690e60ec20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processorAllyPrefab: {fileID: 1064840017343102, guid: 0bc13df265098814684fd9c539c6873d,
+  processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
     type: 2}
-  processorEnemyPrefab: {fileID: 1230398619893840, guid: 480cf5ff6088ee8418a2bcf20aff71a2,
+  processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
     type: 2}
-  processorNuetralPrefab: {fileID: 1525014422980242, guid: 6aea8df98f8e5ac4bbcc7cf7cd181a67,
+  processorNuetralPrefab: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
+    type: 2}
+--- !u!114 &1643307533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1643307531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02676e124b35da54eb97e783c000838b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
+    type: 2}
+  processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
     type: 2}
 --- !u!1001 &1967176230
 Prefab:
@@ -332,5 +347,6 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114272340748115756, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
+    - {fileID: 114066165017237574, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
   m_IsPrefabParent: 0

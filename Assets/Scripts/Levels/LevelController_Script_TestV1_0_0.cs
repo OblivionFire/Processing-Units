@@ -34,9 +34,9 @@ namespace ProcessingUnits
 		{
 			GameObject temp = Instantiate(prefab);
 			temp.transform.position = new Vector3(x, y, z);
-			processor_Script script = temp.GetComponent<processor_Script>();
-			script.setEnergy(energy);
-			script.setUnitOwner(owner);
+			processorV2_Script script = temp.GetComponent<processorV2_Script>();
+			script.setData(energy);
+			script.setOwner(owner);
 
 			if (owner == 1)
 			{
