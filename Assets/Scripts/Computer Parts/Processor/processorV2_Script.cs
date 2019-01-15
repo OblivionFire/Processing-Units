@@ -8,6 +8,9 @@ namespace ProcessingUnits
 		#region Veriables
 		[Header("Object Stats: Data")]
 		private int data;//how much data has been stored in the 
+		private float dataTrans;//how fast data is transfered out of the processing unit
+		private float dataTransMin;//the slowest you can send data given low enough heat
+		private float dataTransMax;//the fastest you can send data given enoug data and low enough heat
 		private int owner;
 		private int roundRobin;//used to roundRobin data
 
@@ -100,7 +103,6 @@ namespace ProcessingUnits
 
 			}
 		}
-		public float DataTrans { get; set; }
 		public float DataCreate { get; set; }
 
 		#endregion
@@ -191,7 +193,9 @@ namespace ProcessingUnits
 		void initializeValues()
 		{
 			data = 0;
-			DataTrans = 0.75f;
+			dataTrans = 0.75f;
+			dataTransMax = 2f;
+			dataTransMin = .25f;
 			DataCreate = 2;
 			roundRobin = 1;
 			power = 1;
@@ -259,7 +263,7 @@ namespace ProcessingUnits
 					{
 						createPulse(i);
 						data--;
-						timeUntilPulse[i] = DataTrans;
+						timeUntilPulse[i] = dataTrans;
 					}
 
 					else if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0))
@@ -268,7 +272,7 @@ namespace ProcessingUnits
 						{
 							createPulse(i);
 							data--;
-							timeUntilPulse[i] = DataTrans;
+							timeUntilPulse[i] = dataTrans;
 
 							if (roundRobin < maxThreads - 1)
 							{
@@ -314,6 +318,21 @@ namespace ProcessingUnits
 			}
 
 			dataCycle -= Time.deltaTime;
+		}
+
+		void dataTransRate()
+		{
+			float d = Input.GetAxis("Mouse ScrollWheel");
+
+			if ((d > 0f) && (dataTrans + .25f <= dataTransMax))
+			{
+				dataTrans += .25f;
+			}
+
+			if ((d < 0f) && (dataTrans - .25f >= dataTransMin))
+			{
+				dataTrans -= .25f;
+			}
 		}
 		#endregion
 		#region create pulse
@@ -385,6 +404,11 @@ namespace ProcessingUnits
 		{
 
 			rend.material.color = hoverColor;
+		}
+
+		void OnMouseOver()
+		{
+			dataTransRate();
 		}
 
 		void OnMouseExit()
