@@ -324,12 +324,12 @@ namespace ProcessingUnits
 		{
 			float d = Input.GetAxis("Mouse ScrollWheel");
 
-			if ((d > 0f) && (dataTrans + .25f <= dataTransMax))
+			if ((d < 0f) && (dataTrans + .25f <= dataTransMax))
 			{
 				dataTrans += .25f;
 			}
 
-			if ((d < 0f) && (dataTrans - .25f >= dataTransMin))
+			if ((d > 0f) && (dataTrans - .25f >= dataTransMin))
 			{
 				dataTrans -= .25f;
 			}
