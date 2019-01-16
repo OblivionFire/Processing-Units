@@ -95,7 +95,7 @@ namespace ProcessingUnits
                 dataTranBar.material = allyPulse_Material;
             }
 
-            if (ownerX == -1)
+            else if (ownerX == -1)
             {
                 dataTranBar.material = enemyPulse_Material;
             }

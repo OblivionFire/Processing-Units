@@ -179,7 +179,7 @@ MonoBehaviour:
     type: 2}
   processorUICanvasPrefab: {fileID: 223525785912686318, guid: d3057ed23b2dadd4881ac9cccd319b17,
     type: 2}
-  dataTranBar: {fileID: 114734641888210150}
+  dataTranBar: {fileID: 114929703528816492}
 --- !u!114 &114685783179554470
 MonoBehaviour:
   m_ObjectHideFlags: 1
