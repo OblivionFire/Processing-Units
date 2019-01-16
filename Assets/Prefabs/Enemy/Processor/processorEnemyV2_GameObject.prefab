@@ -167,6 +167,8 @@ MonoBehaviour:
     type: 2}
   enemyProcessor_Material: {fileID: 2100000, guid: db9783bc389b6e74e9286e5de177f5a8,
     type: 2}
+  allyPulse_Material: {fileID: 2100000, guid: cac18ebe4822d6a4486735590181be56, type: 2}
+  enemyPulse_Material: {fileID: 2100000, guid: f082bc18dee34b24da0ea3c3063ce208, type: 2}
   allyDataPulsePrefab: {fileID: 1828706814572214, guid: 63ea08c8faf52ea40a42b8d1d3e47361,
     type: 2}
   allyThreadPrefab: {fileID: 1517398007511760, guid: 26f38d5be8af5224bb4f0d750a74a40e,
@@ -177,6 +179,7 @@ MonoBehaviour:
     type: 2}
   processorUICanvasPrefab: {fileID: 223525785912686318, guid: d3057ed23b2dadd4881ac9cccd319b17,
     type: 2}
+  dataTranBar: {fileID: 114856001269967430}
 --- !u!114 &114149596772938588
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -252,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: f082bc18dee34b24da0ea3c3063ce208, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
