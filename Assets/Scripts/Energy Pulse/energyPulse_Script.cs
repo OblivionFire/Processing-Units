@@ -12,6 +12,7 @@ namespace ProcessingUnits
 
 		[Header("Private Veriables: Game Objects")]
 		private GameObject target;//That targeted PU of this energy pulse
+        private GameObject home;//The prosessor that the pulse comes from
 
 		[Header("Private Veriables: Object Stats")]
 		private float speed;//the speed at which this energy pulse will move
@@ -36,10 +37,25 @@ namespace ProcessingUnits
 			return target;
 		}
 
-		#endregion
-		#region dontCollid Setter
+        #endregion
+        #region Target Getter/Setter
+        public void setHome(GameObject homeX)
+        {
+            if (homeX != null)
+            {
+                home = homeX;
+            }
+        }
 
-		public void setDontCollid(bool dontCollidX)
+        public GameObject getHome()
+        {
+            return home;
+        }
+
+        #endregion
+        #region dontCollid Setter
+
+        public void setDontCollid(bool dontCollidX)
 		{
 			dontCollid = dontCollidX;
 		}
@@ -115,9 +131,18 @@ namespace ProcessingUnits
 
 			 if (((t.tag == "EnemyComputerUnit") && (tag == "EnemyEnergyPulse")) || ((t.tag == "AllyComputerUnit") && (tag == "AllyEnergyPulse")))
 			{
-				t.setDataPlus(data);
-				Destroy(gameObject);
-				return;
+                if(t.getData() >= 99)
+                {
+                    target = home;
+                    return;
+                }
+                else
+                {
+                    t.setDataPlus(data);
+                    Destroy(gameObject);
+                    return;
+                }
+
 			}
 
 			else if (t.tag == "NuetralComputerUnit")
