@@ -9,8 +9,8 @@ namespace ProcessingUnits
         #region Veriables
         [Header("Object Stats: Data")]
         private int data;//how much data has been stored in the 
-        private float dataTrans;//how fast data is transfered out of the processing unit
-        private float dataTransMin;//the slowest you can send data given low enough heat
+        private float dataTrans;//Acts as a multiplyer of 1 to change trans speed
+        private float dataTransMin;//the slowest you can send data given low enough heat, also allows for 0 to stop trans without disconnecting thread
         private float dataTransMax;//the fastest you can send data given enoug data and low enough heat
         private int owner;
         private int roundRobin;//used to roundRobin data
@@ -133,6 +133,19 @@ namespace ProcessingUnits
             get { return power; }
             set { power = value; }
         }
+        
+        public void powered(bool powerX)
+        {
+            if (powerX == true)
+            {
+                power = 1;
+            }
+            else
+            {
+                power = 0;
+            }
+        }
+
 
         #endregion
         #region ObjectStats: Heat
@@ -218,7 +231,7 @@ namespace ProcessingUnits
             dataTransMin = 0.0f;
             DataCreate = 2;
             roundRobin = 1;
-            power = 1;
+            power = 0;
             heat = 0;
             maxThreads = 4;
             dataCycle = 0;
@@ -275,8 +288,6 @@ namespace ProcessingUnits
             {
                 dataTranBar.fillAmount = 0.0f;
             }
-
-            Debug.Log("DataTransRate: " + dataTrans);
         }
 
         #region Data
@@ -344,15 +355,17 @@ namespace ProcessingUnits
         #region Create Data
         void dataCreation()
         {
-            if ((owner != 0) && (dataCycle <= 0) && (data < 99))
+            if ((owner != 0) && (dataCycle <= 0) && (data < 99) && (power > 0))
             {
                 data++;
-                dataCycle = DataCreate * 1;
+                dataCycle = DataCreate * power;
             }
 
             dataCycle -= Time.deltaTime;
         }
 
+
+        //Use the scroll wheel to move DataTrans between 0-2
         void dataTransRate()
         {
             float d = Input.GetAxis("Mouse ScrollWheel");
@@ -397,6 +410,14 @@ namespace ProcessingUnits
 
         #endregion
         #endregion
+
+
+
+
+
+
+
+
         #region Misc.
 
         public void setMaterial()
@@ -443,6 +464,11 @@ namespace ProcessingUnits
         void OnMouseOver()
         {
             dataTransRate();
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                gameMaster.setToPower(this.gameObject);
+            }
         }
 
         void OnMouseExit()

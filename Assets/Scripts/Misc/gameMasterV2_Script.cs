@@ -10,10 +10,12 @@ namespace ProcessingUnits
 		public static gameMasterV2_Script instance;//singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
 		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
 		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spwn in levels
+        public GameObject powerSupply;//Used to track all power supplies on the board
 
 		[Header("Private Veriable: GameObjects")]
 		private GameObject attacker;//the offencive processor(first selected)
 		private GameObject deffender;//the deffencive processor(second selected)
+        private GameObject toPower;//The next object the player clicks after clicking a power supply
 
 		#region Attacker Setter and Getter
 
@@ -40,10 +42,35 @@ namespace ProcessingUnits
 			return deffender;
 		}
 
-		#endregion
+        #endregion
+        #region powerSupply Setter
+        public void setPowerSupply(GameObject powerSupplyX)
+        {
+            powerSupply = powerSupplyX;
+        }
+        #endregion
+        #region toPower Setter
+        public void setToPower(GameObject prosessorToPower)
+        {
+            if (prosessorToPower == null)
+            {
+                toPower = null;
+            }
 
+            else if (prosessorToPower.tag == "AllyComputerUnit" || prosessorToPower.tag == "EnemyComputerUnit")
+            {
+                Debug.Log("Calling power Link");
+                powerSupply.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+            }
+            
+            else
+            {
+                Debug.Log("Trying to power an object that is not tagged as a ally or enemy computer unit: " + toPower);
+            }
+        }
+        #endregion
 
-		void Awake()
+        void Awake()
 		{
 			if (instance != null)
 			{
