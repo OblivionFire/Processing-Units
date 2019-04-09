@@ -105,6 +105,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ce9f46e0a0a9b443a881ce7f15e93b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerCablePrefab: {fileID: 1661636176284270, guid: 67d1bc2a40c913148893b7549b10f565,
+  powerCablePrefab: {fileID: 1085115304626680, guid: cc72e44377f06c147afa6372bdbe10e2,
     type: 2}
   hoverColor: {r: 0.86764705, g: 0.71674126, b: 0.38916522, a: 0}

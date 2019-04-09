@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4865068392944826}
-  - component: {fileID: 114122108227888194}
   - component: {fileID: 65792848278104142}
+  - component: {fileID: 114613021287035628}
   m_Layer: 0
   m_Name: powerCable_Prefab
   m_TagString: Untagged
@@ -124,19 +124,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.25, y: 0.25, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114122108227888194
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1085115304626680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1788e51c3e1f32847bb7a67b152ad027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  homeProcessor: {fileID: 0}
-  targetProcessor: {fileID: 0}
 --- !u!114 &114135511405283436
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -155,3 +142,17 @@ MonoBehaviour:
   m_lineColor: {r: 0.9485294, g: 0.8109638, b: 0.56493294, a: 1}
   m_lineWidth: 5
   m_lightSaberFactor: 1
+--- !u!114 &114613021287035628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1085115304626680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd70c76fb02cf5043b6730af8f86315d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  slot: 0
+  home: {fileID: 0}

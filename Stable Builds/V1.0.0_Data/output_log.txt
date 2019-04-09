@@ -2,10 +2,15 @@ Mono path[0] = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Managed'
 Mono path[1] = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono'
 Mono config path = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono/etc'
 PlayerConnection initialized from D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55346
-Multi-casting "[IP] 172.16.6.187 [Port] 55346 [Flags] 2 [Guid] 1826615644 [EditorId] 3076619437 [Version] 1048832 [Id] WindowsPlayer(MSI) [Debug] 0" to [225.0.0.222:54997]...
-Started listening to [0.0.0.0:55346]
-PlayerConnection already initialized - listening to [0.0.0.0:55346]
+PlayerConnection initialized network socket : 0.0.0.0 55350
+Socket: bind failed, error: An attempt was made to access a socket in a way forbidden by its access permissions.
+(10013)
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Network/Sockets.cpp Line: 421)
+
+Multi-casting "[IP] 192.168.1.3 [Port] 55350 [Flags] 2 [Guid] 1791244024 [EditorId] 3076619437 [Version] 1048832 [Id] WindowsPlayer(MSI) [Debug] 0" to [225.0.0.222:54997]...
+Started listening to [0.0.0.0:55350]
+PlayerConnection already initialized - listening to [0.0.0.0:55350]
 Player data archive not found at `D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/data.unity3d`, using local filesystemInitialize engine version: 5.6.0f3 (497a0f351392)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -27,7 +32,7 @@ Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\U
 Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
 Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll (this message is harmless)
 Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll into Unity Child Domain
-- Completed reload, in  0.219 seconds
+- Completed reload, in  0.190 seconds
 Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.dll (this message is harmless)
 desktop: 1920x1080 144Hz; virtual: 1920x1080 at 0,0
@@ -38,35 +43,35 @@ The referenced script on this Behaviour (Game Object 'Main Camera_GameObject') i
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
-UnloadTime: 1.381100 ms
+UnloadTime: 1.740520 ms
 Setting up 6 worker threads for Enlighten.
-  Thread -> id: d2c -> priority: 1 
-  Thread -> id: 3ae0 -> priority: 1 
-  Thread -> id: 14ec -> priority: 1 
-  Thread -> id: 1784 -> priority: 1 
-  Thread -> id: 3514 -> priority: 1 
-  Thread -> id: 27a0 -> priority: 1 
+  Thread -> id: 19b0 -> priority: 1 
+  Thread -> id: 250 -> priority: 1 
+  Thread -> id: 4420 -> priority: 1 
+  Thread -> id: 61b4 -> priority: 1 
+  Thread -> id: 100c -> priority: 1 
+  Thread -> id: 74c4 -> priority: 1 
 The referenced script on this Behaviour (Game Object 'Main Camera_Prefab') is missing!
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.821911 ms
+UnloadTime: 2.092984 ms
 System memory in use before: 18.0 MB.
 System memory in use after: 18.0 MB.
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 428.
-Total: 0.254144 ms (FindLiveObjects: 0.020869 ms CreateObjectMapping: 0.012985 ms MarkObjects: 0.185043 ms  DeleteObjects: 0.034318 ms)
+Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 428.
+Total: 0.250434 ms (FindLiveObjects: 0.023652 ms CreateObjectMapping: 0.013913 ms MarkObjects: 0.172985 ms  DeleteObjects: 0.038492 ms)
 
 The referenced script on this Behaviour (Game Object 'Main Camera') is missing!
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.733680 ms
-System memory in use before: 17.8 MB.
+UnloadTime: 0.470724 ms
+System memory in use before: 17.9 MB.
 System memory in use after: 17.8 MB.
 
-Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 430.
-Total: 0.505043 ms (FindLiveObjects: 0.030144 ms CreateObjectMapping: 0.025507 ms MarkObjects: 0.335304 ms  DeleteObjects: 0.112231 ms)
+Unloading 36 unused Assets to reduce memory usage. Loaded Objects now: 430.
+Total: 0.346434 ms (FindLiveObjects: 0.019942 ms CreateObjectMapping: 0.013449 ms MarkObjects: 0.200347 ms  DeleteObjects: 0.111768 ms)
 
