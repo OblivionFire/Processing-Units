@@ -49,8 +49,9 @@ namespace ProcessingUnits
         [Header("Private Veriables: GameObjects")]
         private GameObject[] threads;//array of threads
         private GameObject[] targetsLast;//A list of prev. targets, may or may not be used. Hopefully line updates will be done by the GameMaster
+		private GameObject[] TargetsCurrent; //all current targets
 
-        [Header("Private Veriables: Scripts")]
+		[Header("Private Veriables: Scripts")]
         private processorUI_Script processorUIScript; //ATTACH CANVAS AND TEXT TO PROCESSOR PRESET
         private EnergyLine_Script ELS;//energy line script of the processor
         gameMasterV2_Script gameMaster;
@@ -189,8 +190,6 @@ namespace ProcessingUnits
         {
             return TargetsCurrent[i];
         }
-
-        public GameObject[] TargetsCurrent { get; private set; }
 
         public void setTarget(GameObject targetX, int i)
         {

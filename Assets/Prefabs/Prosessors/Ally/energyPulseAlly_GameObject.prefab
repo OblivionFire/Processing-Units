@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 23490249433780086}
   - component: {fileID: 108467720875560150}
   - component: {fileID: 54702561658558008}
-  - component: {fileID: 114274653590281882}
+  - component: {fileID: 114997584367168834}
   m_Layer: 0
   m_Name: energyPulseAlly_GameObject
   m_TagString: AllyEnergyPulse
@@ -135,7 +135,7 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114274653590281882
+--- !u!114 &114997584367168834
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
