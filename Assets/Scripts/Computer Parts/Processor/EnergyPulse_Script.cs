@@ -192,9 +192,7 @@ namespace ProcessingUnits
 
 		void removePulse()
 		{
-			home.GetComponent<processorV2_Script>().removePulse(this.gameObject);
-			Destroy(gameObject);
-			
+			home.GetComponent<processorV2_Script>().removePulse(this.gameObject);			
 		}
 
 		void OnTriggerEnter(Collider other)

@@ -14,6 +14,8 @@ namespace ProcessingUnits
         private GameObject[] processors;
         private bool[] complete;
         private float endCount;
+		public double dataOverlayTimer;
+		public bool dataVisState;
 
         //[Header("Private Veriable: GameObjects")]
         //Private Veriables
@@ -28,7 +30,8 @@ namespace ProcessingUnits
                 processors[1] = createProcessor(processorEnemyPrefab, 4, -1, 5, 0, -2, 1);
 				gameMasterV2_Script.instance.setPowerSupplyAlly(createProcessor(powerSupplyPrefab, 0, 1, 1, 0, 0, 0));
 				gameMasterV2_Script.instance.setPowerSupplyEnemy(createProcessor(powerSupplyPrefab, 0, -1, 3, 0, 0, 0));
-
+				dataOverlayTimer = 1.0;
+				dataVisState = true;
 
 			}
         }
@@ -85,7 +88,14 @@ namespace ProcessingUnits
         {
             checkLevel(processors);
             levelComplete(complete);
-        }
+			dataOverlayTimer -= Time.deltaTime;
+
+			if ((Input.GetKey("o")) && (dataOverlayTimer <= 0.0))
+			{
+				powerOverlayToggle(dataVisState);
+				dataOverlayTimer = 1.0;
+			}
+		}
 
 		public void powerOverlayToggle(bool state)
 		{
