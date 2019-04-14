@@ -108,7 +108,10 @@ namespace ProcessingUnits
 
 		void Update()
 		{
-
+			if (Input.GetKey("p"))
+			{
+				this.gameObject.GetComponent<LevelController_Script_TestV1_0_0>().powerOverlayToggle();
+			}
 		}
 
 		public void initializeAttack()
