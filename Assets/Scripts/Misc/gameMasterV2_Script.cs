@@ -18,6 +18,9 @@ namespace ProcessingUnits
 		private GameObject deffender;//the deffencive processor(second selected)
         private GameObject toPower;//The next object slected to power with the power supply
 
+		[Header("Overlay Timers")]
+		private double powerOverlayTimer;
+
 		#region Attacker Setter and Getter
 
 		public void setAttacker(GameObject attackerX)
@@ -96,7 +99,7 @@ namespace ProcessingUnits
 
 		void initializeValues()
 		{
-
+			powerOverlayTimer = 1.0;
 		}
 
 
@@ -108,9 +111,16 @@ namespace ProcessingUnits
 
 		void Update()
 		{
-			if (Input.GetKey("p"))
+			if(powerOverlayTimer > -1.0)
+			{
+				powerOverlayTimer -= Time.deltaTime;
+			}
+			
+
+			if ((Input.GetKey("p")) && (powerOverlayTimer <= 0.0))
 			{
 				this.gameObject.GetComponent<LevelController_Script_TestV1_0_0>().powerOverlayToggle();
+				powerOverlayTimer = 1.0;
 			}
 		}
 

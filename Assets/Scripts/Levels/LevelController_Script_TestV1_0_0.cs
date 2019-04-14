@@ -89,7 +89,7 @@ namespace ProcessingUnits
 
 		public void powerOverlayToggle()
 		{
-			bool setState = !processors[0].GetComponent<MeshRenderer>().enabled;
+			bool setState = !processors[0].GetComponent<processorV2_Script>().getVisState();
 			for (int i = 0; i < processors.Length; i++)
 			{
 				processors[i].GetComponent<processorV2_Script>().setDataLineVis(setState);

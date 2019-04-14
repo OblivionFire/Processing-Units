@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
@@ -63,6 +64,10 @@ namespace ProcessingUnits
 
 		[Header("Private Veriables: Render")]
 		private Renderer rend;//render attached to this script, use to set colour and material
+
+		[Header("Energy Pulse")]
+		private EnergyPulse first;
+		private EnergyPulse scanner;
 		#endregion
 
 		#region Getters/Setters
@@ -127,6 +132,10 @@ namespace ProcessingUnits
 		}
 		public float DataCreate { get; set; }
 
+		public bool getVisState()
+		{
+			return visState;
+		}
 		#endregion
 		#region ObjectStats: Power
 
@@ -247,6 +256,8 @@ namespace ProcessingUnits
 			threads = new GameObject[maxThreads];
 			TargetsCurrent = new GameObject[maxThreads];
 			targetsLast = new GameObject[maxThreads];
+			visState = true;
+			scanner = new EnergyPulse();
 
 		}
 
@@ -393,6 +404,14 @@ namespace ProcessingUnits
 				energyPulseGoScript.setOwner(owner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
+				addPulse(energyPulseGO);
+
+				if (visState == false)
+				{
+					energyPulseGoScript.GetComponent<MeshRenderer>().enabled = false;
+					energyPulseGoScript.GetComponent<Light>().enabled = false;
+				}
+
 			}
 
 			if (owner == -1)
@@ -404,7 +423,68 @@ namespace ProcessingUnits
 				energyPulseGoScript.setOwner(owner);
 				energyPulseGoScript.setOwnerHoverColor(hoverColor);
 				energyPulseGoScript.setOwnerStartColor(startColor);
+				addPulse(energyPulseGO);
 
+				if (visState == false)
+				{
+					energyPulseGoScript.GetComponent<MeshRenderer>().enabled = false;
+					energyPulseGoScript.GetComponent<Light>().enabled = false;
+				}
+
+			}
+		}
+
+		void addPulse(GameObject pulse)
+		{
+			if (first == null)
+			{
+				first = new EnergyPulse(pulse);
+			}
+
+			else
+			{
+				bool exit = false;
+				scanner = first;
+
+				do
+				{
+					if (scanner.getNext() == null)
+					{
+						scanner.setNext(new EnergyPulse(scanner, pulse));
+						exit = true;
+					}
+
+					else
+					{
+						scanner = scanner.getNext();
+					}
+
+				} while (exit == false);
+			}
+		}
+
+		public void removePulse(GameObject pulse)
+		{
+			if(first.getNext() == null)
+			{
+				first = null;
+			}
+
+			else
+			{
+				bool exit = true;
+				scanner = first;
+
+				do
+				{
+					if(scanner.getSelf() == pulse)
+					{
+						scanner.getLast().setNext(scanner.getNext());
+						scanner.getNext().setLast(scanner.getLast());
+					}
+					
+
+				} while (exit == false);
 			}
 		}
 
@@ -415,6 +495,8 @@ namespace ProcessingUnits
 
 		public void setDataLineVis(bool state)
 		{
+			visState = state;
+
 			for (int i = 0; i < threads.Length; i++)
 			{
 				if (threads[i] != null)
@@ -426,6 +508,22 @@ namespace ProcessingUnits
 				{
 
 				}
+			}
+
+			try
+			{
+				scanner = first;
+
+				while (scanner != null)
+				{
+					scanner.getSelf().GetComponent<MeshRenderer>().enabled = state;
+					scanner.getSelf().GetComponent<Light>().enabled = state;
+					scanner = scanner.getNext();
+				}
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e, this);
 			}
 		}
 
@@ -547,5 +645,61 @@ namespace ProcessingUnits
 		}
 
 		#endregion
+	}
+
+
+	public class EnergyPulse
+	{
+		private EnergyPulse last;
+		private EnergyPulse next;
+		private EnergyPulse selfPulse;
+		private GameObject self;
+
+		#region Getters/Setters
+
+		public void setLast(EnergyPulse pulse)
+		{
+			last = pulse;
+		}
+		public EnergyPulse getLast()
+		{
+			return last;
+		}
+
+		public void setNext(EnergyPulse pulse)
+		{
+			next = pulse;
+		}
+		public EnergyPulse getNext()
+		{
+			return next;
+		}
+
+		public GameObject getSelf()
+		{
+			return self;
+		}
+
+		public EnergyPulse getSelfPulse()
+		{
+			return selfPulse;
+		}
+		#endregion
+
+		public EnergyPulse()
+		{
+
+		}
+
+		public EnergyPulse(GameObject selfX)
+		{
+			self = selfX;
+		}
+
+		public EnergyPulse(EnergyPulse lastX, GameObject selfX)
+		{
+			last = lastX;
+			self = selfX;
+		}
 	}
 }
