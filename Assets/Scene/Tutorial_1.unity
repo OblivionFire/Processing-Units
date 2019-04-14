@@ -303,6 +303,8 @@ MonoBehaviour:
     type: 2}
   processorNuetralPrefab: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
     type: 2}
+  powerSupplyPrefab: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
+    type: 2}
 --- !u!114 &1643307533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,6 +319,10 @@ MonoBehaviour:
   processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
     type: 2}
   processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
+    type: 2}
+  powerSupplyAlly: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
+    type: 2}
+  powerSupplyEnemy: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
     type: 2}
 --- !u!1001 &1967176230
 Prefab:
