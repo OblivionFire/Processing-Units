@@ -19,8 +19,12 @@ namespace ProcessingUnits
         private GameObject toPower;//The next object slected to power with the power supply
 
 		[Header("Overlay Timers")]
-		private double powerOverlayTimer;
+		public double powerOverlayTimer;
+		public double dataOverlayTimer;
 
+		[Header("Overlay Bools")]
+		public bool dataVisState;
+		public bool powerVisState;
 		#region Attacker Setter and Getter
 
 		public void setAttacker(GameObject attackerX)
@@ -100,6 +104,8 @@ namespace ProcessingUnits
 		void initializeValues()
 		{
 			powerOverlayTimer = 1.0;
+			dataVisState = true;
+			powerVisState = true;
 		}
 
 
@@ -111,15 +117,22 @@ namespace ProcessingUnits
 
 		void Update()
 		{
-			if(powerOverlayTimer > -1.0)
-			{
+				dataOverlayTimer -= Time.deltaTime;
 				powerOverlayTimer -= Time.deltaTime;
-			}
 			
 
-			if ((Input.GetKey("p")) && (powerOverlayTimer <= 0.0))
+			if ((Input.GetKey("o")) && (dataOverlayTimer <= 0.0))
 			{
-				this.gameObject.GetComponent<LevelController_Script_TestV1_0_0>().powerOverlayToggle();
+				dataVisState = !dataVisState;
+				this.gameObject.GetComponent<LevelController_Script_TestV1_0_0>().powerOverlayToggle(dataVisState);
+				dataOverlayTimer = 1.0;
+			}
+
+			if((Input.GetKey("p")) && (powerOverlayTimer <= 0.0))
+			{
+				powerVisState = !powerVisState;
+				powerSupplyAlly.GetComponent<powerSupply_Script>().setPowerLineVis(powerVisState);
+				powerSupplyEnemy.GetComponent<powerSupply_Script>().setPowerLineVis(powerVisState);
 				powerOverlayTimer = 1.0;
 			}
 		}

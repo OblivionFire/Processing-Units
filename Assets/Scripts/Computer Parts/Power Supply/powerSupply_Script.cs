@@ -24,6 +24,7 @@ namespace ProcessingUnits
 		private int maxPower; //max number of power cables allowed, will be broken down into actual pins at some point
 		private GameObject[] powerCables; //array of power cables
 		private Renderer rend; //render for this GameObject
+		private bool visState;
 
 		#region Getters/Setters
 
@@ -46,6 +47,7 @@ namespace ProcessingUnits
             powerCables = new GameObject[maxPower];
             rend = this.GetComponent<Renderer>();
             startColor = rend.material.color;
+			visState = true;
         }
 
 
@@ -67,16 +69,39 @@ namespace ProcessingUnits
             {
                 if (powerCables[i] == null)
                 {
-                    powerCables[i] = toPower;
                     toPower.GetComponent<processorV2_Script>().powered(true);
                     GameObject powerCable = Instantiate(powerCablePrefab);
+					powerCables[i] = powerCable;
                     powerCable.GetComponent<powerCable_Script>().drawPowerCable(this.gameObject.transform, toPower.transform, toPower.GetComponent<processorV2_Script>(), this, i);
                     gamemaster.setToPower(null);
+
+					if(visState == false)
+					{
+						powerCable.GetComponentInChildren<MeshRenderer>().enabled = false;
+					}
 
                     return;
                 }
             }
         }
+
+		public void setPowerLineVis(bool state)
+		{
+			visState = state;
+
+			for(int i = 0; i < powerCables.Length; i++)
+			{
+				if(powerCables[i] != null)
+				{
+					powerCables[i].GetComponentInChildren<MeshRenderer>().enabled = state;
+				}
+
+				else
+				{
+
+				}
+			}
+		}
 
 		public void removeCable(int i)
 		{
