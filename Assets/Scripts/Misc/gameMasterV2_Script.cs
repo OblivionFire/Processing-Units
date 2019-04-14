@@ -7,15 +7,16 @@ namespace ProcessingUnits
 	{
 
 		[Header("Object Stats")]
-		public static gameMasterV2_Script instance;//singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
-		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
-		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spwn in levels
-        public GameObject powerSupply;//Used to track all power supplies on the board
+		public static gameMasterV2_Script instance; //singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
+		public GameObject processorAllyPrefab; //Ally processor prefab used to spawn in levels
+		public GameObject processorEnemyPrefab; //Enemy processor prefab used to spwn in levels
+        public GameObject powerSupplyAlly; //Used to hold Ally power supply reference
+		public GameObject powerSupplyEnemy; //Used to hold Enemy power supply reference
 
 		[Header("Private Veriable: GameObjects")]
 		private GameObject attacker;//the offencive processor(first selected)
 		private GameObject deffender;//the deffencive processor(second selected)
-        private GameObject toPower;//The next object the player clicks after clicking a power supply
+        private GameObject toPower;//The next object slected to power with the power supply
 
 		#region Attacker Setter and Getter
 
@@ -44,10 +45,15 @@ namespace ProcessingUnits
 
         #endregion
         #region powerSupply Setter
-        public void setPowerSupply(GameObject powerSupplyX)
+        public void setPowerSupplyAlly(GameObject powerSupplyX)
         {
-            powerSupply = powerSupplyX;
+            powerSupplyAlly = powerSupplyX;
         }
+
+		public void setPowerSupplyEnemy(GameObject powerSupplyX)
+		{
+			powerSupplyEnemy = powerSupplyX;
+		}
         #endregion
         #region toPower Setter
         public void setToPower(GameObject prosessorToPower)
@@ -57,11 +63,15 @@ namespace ProcessingUnits
                 toPower = null;
             }
 
-            else if (prosessorToPower.tag == "AllyComputerUnit" || prosessorToPower.tag == "EnemyComputerUnit")
+            else if (prosessorToPower.tag == "AllyComputerUnit")
             {
-                Debug.Log("Calling power Link");
-                powerSupply.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+                powerSupplyAlly.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
             }
+
+			else if (prosessorToPower.tag == "EnemyComputerUnit")
+			{
+				powerSupplyEnemy.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+			}
             
             else
             {

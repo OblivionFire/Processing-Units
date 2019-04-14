@@ -7,10 +7,14 @@ namespace ProcessingUnits
     public class powerCable_Script : MonoBehaviour
     {
 
+		[Header("public variables")]
+		public int slot;//used to store what 'slot' this cable is plugged into on the power supply
+		public int power;
 
+		[Header("Scripts")]
         public processorV2_Script target;
-        public int slot;//used to store what 'slot' this cable is plugged into on the power supply
-        public powerSupply_Script home;
+		public powerSupply_Script home;
+ 
 
         // Use this for initialization
         void Start()

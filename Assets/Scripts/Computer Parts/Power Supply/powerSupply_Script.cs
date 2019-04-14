@@ -8,29 +8,41 @@ namespace ProcessingUnits
     {
 
         [Header("Unity Presets: Game Objects")]
-        public GameObject powerCablePrefab;
+        public GameObject powerCablePrefab; //power cable prefab
 
-        [Header("Misc (Temp)")]
-        private int maxPower;
-        private GameObject[] powerCables;
-        private Renderer rend;
-        public Color hoverColor;
-        private Color startColor;
+		[Header("Scripts")]
+		gameMasterV2_Script gamemaster; //game master singleton instance
 
+		[Header("Colors")]
+        public Color hoverColor; //color of component when mouse is held over
+        private Color startColor; //color of component when no mouse is present
 
-        [Header("Scripts")]
-        gameMasterV2_Script gamemaster;
+		[Header("Misc. Public Veriables")]
 
+		[Header("Misc. Private Veriables")]
+		private int owner; //Unity onwer (1 ally, 0 neutral, -1 enemy)
+		private int maxPower; //max number of power cables allowed, will be broken down into actual pins at some point
+		private GameObject[] powerCables; //array of power cables
+		private Renderer rend; //render for this GameObject
 
-        public void removeCable(int i)
-        {
-            powerCables[i] = null;
-        }
+		#region Getters/Setters
 
-        void initializeValues()
+		public void setOwner(int ownerX)
+		{
+			owner = ownerX;
+		}
+
+		public int getOwner()
+		{
+			return owner;
+		}
+
+		#endregion
+
+		void initializeValues()
         {
             gamemaster = gameMasterV2_Script.instance;
-            maxPower = 2;
+            maxPower = 4;
             powerCables = new GameObject[maxPower];
             rend = this.GetComponent<Renderer>();
             startColor = rend.material.color;
@@ -41,9 +53,6 @@ namespace ProcessingUnits
         void Start()
         {
             initializeValues();
-            Debug.Log("Start, gamemaster: " + gamemaster);
-            Debug.Log("Max Power: " + maxPower);
-            Debug.Log("Power Cables: " + powerCables.Length);
         }
 
         // Update is called once per frame
@@ -54,18 +63,10 @@ namespace ProcessingUnits
 
         public void powerLink(GameObject toPower)
         {
-            Debug.Log("pre for loop powerLink");
-            Debug.Log("toPower: " + toPower);
-            Debug.Log("gamemaster: " + gamemaster);
-            Debug.Log("Power Cables length: " + powerCables.Length);
             for (int i = 0; i < powerCables.Length; i++)
             {
-                Debug.Log("Mid For loop, i: " + i);
-                Debug.Log("i~toPower: " + i + " ~ " + toPower);
-                Debug.Log("i~gameMaster: " + i +" ~ " + gamemaster);
                 if (powerCables[i] == null)
                 {
-                    Debug.Log("Inside if loop");
                     powerCables[i] = toPower;
                     toPower.GetComponent<processorV2_Script>().powered(true);
                     GameObject powerCable = Instantiate(powerCablePrefab);
@@ -77,15 +78,10 @@ namespace ProcessingUnits
             }
         }
 
-        private void OnMouseOver()
-        {
-            if (Input.GetMouseButtonDown(1))
-            {
-                Debug.Log("Get Mouse Down On Power Supply");
-                Debug.Log("Game Master: " + gamemaster);
-                Debug.Log("Power Cables: " + powerCables.Length);
-            }
-        }
+		public void removeCable(int i)
+		{
+			powerCables[i] = null;
+		}
 
         void OnMouseEnter()
         {

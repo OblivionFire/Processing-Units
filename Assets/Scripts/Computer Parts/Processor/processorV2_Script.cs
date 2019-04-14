@@ -412,11 +412,6 @@ namespace ProcessingUnits
 
 
 
-
-
-
-
-
         #region Misc.
 
         public void setMaterial()

@@ -24,25 +24,27 @@ namespace ProcessingUnits
                 endCount = 2;
                 processors = new GameObject[2];
                 complete = new bool[2];
-                processors[0] = createProcessor(processorAllyPrefab, 9, 1, -1, 0, -2);
-                processors[1] = createProcessor(processorEnemyPrefab, 4, -1, 5, 0, -2);
-                gameMasterV2_Script.instance.setPowerSupply(createProcessor(powerSupplyPrefab, 0, 0, 3, 0, 0));
+                processors[0] = createProcessor(processorAllyPrefab, 9, 1, -1, 0, -2, 1);
+                processors[1] = createProcessor(processorEnemyPrefab, 4, -1, 5, 0, -2, 1);
+				gameMasterV2_Script.instance.setPowerSupplyAlly(createProcessor(powerSupplyPrefab, 0, 1, 1, 0, 0, 0));
+				gameMasterV2_Script.instance.setPowerSupplyEnemy(createProcessor(powerSupplyPrefab, 0, -1, 3, 0, 0, 0));
 
 
-            }
+			}
         }
 
-        GameObject createProcessor(GameObject prefab, int energy, int owner, int x, int y, int z)
+        GameObject createProcessor(GameObject prefab, int energy, int owner, int x, int y, int z, int component)
         {
 
-            if ((energy == 0) && (owner == 0))
+            if (component == 0)
             {
                 GameObject temp = Instantiate(prefab);
                 temp.transform.position = new Vector3(x, y, z);
+				temp.GetComponent<powerSupply_Script>().setOwner(owner);
                 return temp;
             }
 
-            else
+            else if (component == 1)
             {
                 GameObject temp = Instantiate(prefab);
                 temp.transform.position = new Vector3(x, y, z);
@@ -66,6 +68,11 @@ namespace ProcessingUnits
                 }
                 return temp;
             }
+
+			else
+			{
+				return null;
+			}
         }
 
         void Start()

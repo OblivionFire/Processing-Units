@@ -143,7 +143,7 @@ namespace ProcessingUnits
                     return;
                 }
 
-			}
+			 }
 
 			else if (t.tag == "NuetralComputerUnit")
 			{

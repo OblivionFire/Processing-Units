@@ -380,6 +380,8 @@ MonoBehaviour:
     type: 2}
   processorNuetralPrefab: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
     type: 2}
+  powerSupplyPrefab: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
+    type: 2}
 --- !u!4 &1678168149 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4804314002649810, guid: 4766b0f816be8b54c9f8417e3831dddf,
@@ -400,6 +402,8 @@ MonoBehaviour:
     type: 2}
   processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
     type: 2}
+  powerSupplyAlly: {fileID: 0}
+  powerSupplyEnemy: {fileID: 0}
 --- !u!114 &1678168151
 MonoBehaviour:
   m_ObjectHideFlags: 0
