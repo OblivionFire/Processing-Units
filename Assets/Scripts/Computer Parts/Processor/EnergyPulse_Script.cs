@@ -139,7 +139,7 @@ namespace ProcessingUnits
                 else
                 {
                     t.setDataPlus(data);
-                    Destroy(gameObject);
+                    removePulse();
                     return;
                 }
 
@@ -186,8 +186,15 @@ namespace ProcessingUnits
 			{
 				t.setDataPlus(-1*data);
 			}
-			Destroy(gameObject);
+			removePulse();
 			return;
+		}
+
+		void removePulse()
+		{
+			home.GetComponent<processorV2_Script>().removePulse(this.gameObject);
+			Destroy(gameObject);
+			
 		}
 
 		void OnTriggerEnter(Collider other)
@@ -195,7 +202,7 @@ namespace ProcessingUnits
 			if ((other.gameObject.tag == "EnemyEnergyPulse") && (dontCollid != true))
 			{
 				Destroy(other.gameObject);
-				Destroy(gameObject);
+				removePulse();
 				return;
 			}
 		}

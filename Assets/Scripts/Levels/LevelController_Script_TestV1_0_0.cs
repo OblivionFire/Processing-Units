@@ -87,6 +87,14 @@ namespace ProcessingUnits
             levelComplete(complete);
         }
 
+		public void powerOverlayToggle(bool state)
+		{
+			for (int i = 0; i < processors.Length; i++)
+			{
+				processors[i].GetComponent<processorV2_Script>().setDataLineVis(state);
+			}
+		}
+
         void levelComplete(bool[] checks)
         {
             bool nextLevel = true;
