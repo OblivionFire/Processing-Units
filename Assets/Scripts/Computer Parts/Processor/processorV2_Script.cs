@@ -9,8 +9,8 @@ namespace ProcessingUnits
         #region Veriables
         [Header("Object Stats: Data")]
         private int data;//how much data has been stored in the 
-        private float dataTrans;//how fast data is transfered out of the processing unit
-        private float dataTransMin;//the slowest you can send data given low enough heat
+        private float dataTrans;//Acts as a multiplyer of 1 to change trans speed
+        private float dataTransMin;//the slowest you can send data given low enough heat, also allows for 0 to stop trans without disconnecting thread
         private float dataTransMax;//the fastest you can send data given enoug data and low enough heat
         private int owner;
         private int roundRobin;//used to roundRobin data
@@ -49,8 +49,9 @@ namespace ProcessingUnits
         [Header("Private Veriables: GameObjects")]
         private GameObject[] threads;//array of threads
         private GameObject[] targetsLast;//A list of prev. targets, may or may not be used. Hopefully line updates will be done by the GameMaster
+		private GameObject[] TargetsCurrent; //all current targets
 
-        [Header("Private Veriables: Scripts")]
+		[Header("Private Veriables: Scripts")]
         private processorUI_Script processorUIScript; //ATTACH CANVAS AND TEXT TO PROCESSOR PRESET
         private EnergyLine_Script ELS;//energy line script of the processor
         gameMasterV2_Script gameMaster;
@@ -95,7 +96,7 @@ namespace ProcessingUnits
                 dataTranBar.material = allyPulse_Material;
             }
 
-            if (ownerX == -1)
+            else if (ownerX == -1)
             {
                 dataTranBar.material = enemyPulse_Material;
             }
@@ -133,6 +134,19 @@ namespace ProcessingUnits
             get { return power; }
             set { power = value; }
         }
+        
+        public void powered(bool powerX)
+        {
+            if (powerX == true)
+            {
+                power = 1;
+            }
+            else
+            {
+                power = 0;
+            }
+        }
+
 
         #endregion
         #region ObjectStats: Heat
@@ -177,8 +191,6 @@ namespace ProcessingUnits
             return TargetsCurrent[i];
         }
 
-        public GameObject[] TargetsCurrent { get; private set; }
-
         public void setTarget(GameObject targetX, int i)
         {
             TargetsCurrent[i] = targetX;
@@ -215,10 +227,10 @@ namespace ProcessingUnits
             data = 0;
             dataTrans = 0.75f;
             dataTransMax = 2f;
-            dataTransMin = .25f;
+            dataTransMin = 0.0f;
             DataCreate = 2;
             roundRobin = 1;
-            power = 1;
+            power = 0;
             heat = 0;
             maxThreads = 4;
             dataCycle = 0;
@@ -269,7 +281,7 @@ namespace ProcessingUnits
 
             if ((owner == 1) || (owner == -1))
             {
-                dataTranBar.fillAmount = (dataTrans / dataTransMax);
+                dataTranBar.fillAmount = (Mathf.Ceil(100 * (dataTrans / dataTransMax))) / 100; //Inverts controls, the higher dataTrans the slower it transfers
             }
             else
             {
@@ -287,20 +299,20 @@ namespace ProcessingUnits
 
                 if ((threads[i] != null) && (TargetsCurrent[i] != null))
                 {
-                    if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > maxThreads))
+                    if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > maxThreads) && (TargetsCurrent[i].GetComponent<processorV2_Script>().getData() < 99) && (dataTrans != 0))
                     {
                         createPulse(i);
                         data--;
-                        timeUntilPulse[i] = dataTrans;
+                        timeUntilPulse[i] = (1 / dataTrans);
                     }
 
-                    else if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0))
+                    else if ((TargetsCurrent[i] == true) && (timeUntilPulse[i] <= 0) && (data > 0) && (TargetsCurrent[i].GetComponent<processorV2_Script>().getData() < 99) && (dataTrans != 0))
                     {
                         if (i == roundRobin - 1)
                         {
                             createPulse(i);
                             data--;
-                            timeUntilPulse[i] = dataTrans;
+                            timeUntilPulse[i] = (1 / dataTrans);
 
                             if (roundRobin < maxThreads - 1)
                             {
@@ -317,6 +329,8 @@ namespace ProcessingUnits
                 timeUntilPulse[i] -= Time.deltaTime;
             }
 
+
+            //Used to increment the counter of roundRobin when the array of threads is no full
             if (data < maxThreads)
             {
                 for (int i = 1; i < threads.Length; i++)
@@ -336,28 +350,31 @@ namespace ProcessingUnits
                 }
             }
         }
+        #endregion
         #region Create Data
         void dataCreation()
         {
-            if ((owner != 0) && (dataCycle <= 0) && (data < 99))
+            if ((owner != 0) && (dataCycle <= 0) && (data < 99) && (power > 0))
             {
                 data++;
-                dataCycle = DataCreate * 1;
+                dataCycle = DataCreate * power;
             }
 
             dataCycle -= Time.deltaTime;
         }
 
+
+        //Use the scroll wheel to move DataTrans between 0-2
         void dataTransRate()
         {
             float d = Input.GetAxis("Mouse ScrollWheel");
 
-            if ((d < 0f) && (dataTrans + .25f <= dataTransMax))
+            if ((d > 0f) && (dataTrans + .25f <= dataTransMax))
             {
                 dataTrans += .25f;
             }
 
-            if ((d > 0f) && (dataTrans - .25f >= dataTransMin))
+            if ((d < 0f) && (dataTrans - .25f >= dataTransMin))
             {
                 dataTrans -= .25f;
             }
@@ -371,6 +388,7 @@ namespace ProcessingUnits
                 GameObject energyPulseGO = Instantiate(allyDataPulsePrefab, gameObject.transform);
                 energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
                 energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
+                energyPulseGoScript.setHome(this.gameObject);
                 energyPulseGoScript.setOwner(owner);
                 energyPulseGoScript.setOwnerHoverColor(hoverColor);
                 energyPulseGoScript.setOwnerStartColor(startColor);
@@ -381,6 +399,7 @@ namespace ProcessingUnits
                 GameObject energyPulseGO = Instantiate(enemyDataPulsePrefab, gameObject.transform);
                 energyPulse_Script energyPulseGoScript = energyPulseGO.GetComponent<energyPulse_Script>();
                 energyPulseGoScript.setTarget(TargetsCurrent[targetID]);
+                energyPulseGoScript.setHome(this.gameObject);
                 energyPulseGoScript.setOwner(owner);
                 energyPulseGoScript.setOwnerHoverColor(hoverColor);
                 energyPulseGoScript.setOwnerStartColor(startColor);
@@ -390,7 +409,9 @@ namespace ProcessingUnits
 
         #endregion
         #endregion
-        #endregion
+
+
+
         #region Misc.
 
         public void setMaterial()
@@ -437,6 +458,11 @@ namespace ProcessingUnits
         void OnMouseOver()
         {
             dataTransRate();
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                gameMaster.setToPower(this.gameObject);
+            }
         }
 
         void OnMouseExit()

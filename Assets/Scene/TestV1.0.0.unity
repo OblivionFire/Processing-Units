@@ -108,88 +108,6 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &1209065866
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1209065870}
-  - component: {fileID: 1209065869}
-  - component: {fileID: 1209065868}
-  - component: {fileID: 1209065867}
-  m_Layer: 0
-  m_Name: powerSupply
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!23 &1209065867
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1209065866}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 2100000, guid: b9416d217ffd6ff4099b70f879f70583, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
---- !u!65 &1209065868
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1209065866}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1209065869
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1209065866}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1209065870
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1209065866}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1231177269
 Prefab:
   m_ObjectHideFlags: 0
@@ -273,6 +191,7 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114272340748115756, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
+    - {fileID: 114066165017237574, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
   m_ParentPrefab: {fileID: 100100000, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1443613621
@@ -387,6 +306,23 @@ GameObject:
   m_PrefabParentObject: {fileID: 1189044539594044, guid: 4766b0f816be8b54c9f8417e3831dddf,
     type: 2}
   m_PrefabInternal: {fileID: 1300587447}
+--- !u!114 &2100832409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2100832408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02676e124b35da54eb97e783c000838b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
+    type: 2}
+  processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
+    type: 2}
+  powerSupply: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
+    type: 2}
 --- !u!114 &2100832411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -398,9 +334,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e19c125bfde24164c9039dc3869c3818, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processorAllyPrefab: {fileID: 1064840017343102, guid: 0bc13df265098814684fd9c539c6873d,
+  processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
     type: 2}
-  processorEnemyPrefab: {fileID: 1230398619893840, guid: 480cf5ff6088ee8418a2bcf20aff71a2,
+  processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
     type: 2}
-  processorNuetralPrefab: {fileID: 1525014422980242, guid: 6aea8df98f8e5ac4bbcc7cf7cd181a67,
+  processorNuetralPrefab: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
+    type: 2}
+  powerSupplyPrefab: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
     type: 2}

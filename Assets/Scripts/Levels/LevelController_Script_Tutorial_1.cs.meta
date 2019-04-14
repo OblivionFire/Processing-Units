@@ -1,10 +1,18 @@
 fileFormatVersion: 2
 guid: 15d86e29221223349b0226690e60ec20
-timeCreated: 1532230298
+timeCreated: 1554954180
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - processorAllyPrefab: {fileID: 1064840017343102, guid: 4d5f5f3a3f0c4fe44a44739f9b184a76,
+      type: 2}
+  - processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
+      type: 2}
+  - processorNuetralPrefab: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
+      type: 2}
+  - powerSupplyPrefab: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

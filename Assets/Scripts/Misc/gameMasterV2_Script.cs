@@ -7,13 +7,16 @@ namespace ProcessingUnits
 	{
 
 		[Header("Object Stats")]
-		public static gameMasterV2_Script instance;//singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
-		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
-		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spwn in levels
+		public static gameMasterV2_Script instance; //singleton patttern. Basically there can only ever be one gameMaster so it sets itself to instance and everything else referances instance
+		public GameObject processorAllyPrefab; //Ally processor prefab used to spawn in levels
+		public GameObject processorEnemyPrefab; //Enemy processor prefab used to spwn in levels
+        public GameObject powerSupplyAlly; //Used to hold Ally power supply reference
+		public GameObject powerSupplyEnemy; //Used to hold Enemy power supply reference
 
 		[Header("Private Veriable: GameObjects")]
 		private GameObject attacker;//the offencive processor(first selected)
 		private GameObject deffender;//the deffencive processor(second selected)
+        private GameObject toPower;//The next object slected to power with the power supply
 
 		#region Attacker Setter and Getter
 
@@ -40,10 +43,44 @@ namespace ProcessingUnits
 			return deffender;
 		}
 
-		#endregion
+        #endregion
+        #region powerSupply Setter
+        public void setPowerSupplyAlly(GameObject powerSupplyX)
+        {
+            powerSupplyAlly = powerSupplyX;
+        }
 
+		public void setPowerSupplyEnemy(GameObject powerSupplyX)
+		{
+			powerSupplyEnemy = powerSupplyX;
+		}
+        #endregion
+        #region toPower Setter
+        public void setToPower(GameObject prosessorToPower)
+        {
+            if (prosessorToPower == null)
+            {
+                toPower = null;
+            }
 
-		void Awake()
+            else if (prosessorToPower.tag == "AllyComputerUnit")
+            {
+                powerSupplyAlly.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+            }
+
+			else if (prosessorToPower.tag == "EnemyComputerUnit")
+			{
+				powerSupplyEnemy.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+			}
+            
+            else
+            {
+                Debug.Log("Trying to power an object that is not tagged as a ally or enemy computer unit: " + toPower);
+            }
+        }
+        #endregion
+
+        void Awake()
 		{
 			if (instance != null)
 			{

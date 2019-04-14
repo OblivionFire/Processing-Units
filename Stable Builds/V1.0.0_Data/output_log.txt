@@ -1,36 +1,41 @@
-Mono path[0] = 'C:/Programming/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Managed'
-Mono path[1] = 'C:/Programming/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono'
-Mono config path = 'C:/Programming/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono/etc'
-PlayerConnection initialized from C:/Programming/Repos/Processing-Units/Stable Builds/V1.0.0_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55264
-Multi-casting "[IP] 15.0.0.91 [Port] 55264 [Flags] 2 [Guid] 3882672649 [EditorId] 3076619437 [Version] 1048832 [Id] WindowsPlayer(Gaming-PC) [Debug] 0" to [225.0.0.222:54997]...
-Started listening to [0.0.0.0:55264]
-PlayerConnection already initialized - listening to [0.0.0.0:55264]
-Player data archive not found at `C:/Programming/Repos/Processing-Units/Stable Builds/V1.0.0_Data/data.unity3d`, using local filesystemInitialize engine version: 5.6.0f3 (497a0f351392)
+Mono path[0] = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Managed'
+Mono path[1] = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono'
+Mono config path = 'D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/Mono/etc'
+PlayerConnection initialized from D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data (debug = 0)
+PlayerConnection initialized network socket : 0.0.0.0 55350
+Socket: bind failed, error: An attempt was made to access a socket in a way forbidden by its access permissions.
+(10013)
+ 
+(Filename: C:\buildslave\unity\build\Runtime/Network/Sockets.cpp Line: 421)
+
+Multi-casting "[IP] 192.168.1.3 [Port] 55350 [Flags] 2 [Guid] 1791244024 [EditorId] 3076619437 [Version] 1048832 [Id] WindowsPlayer(MSI) [Debug] 0" to [225.0.0.222:54997]...
+Started listening to [0.0.0.0:55350]
+PlayerConnection already initialized - listening to [0.0.0.0:55350]
+Player data archive not found at `D:/Repos/Processing-Units/Stable Builds/V1.0.0_Data/data.unity3d`, using local filesystemInitialize engine version: 5.6.0f3 (497a0f351392)
 GfxDevice: creating device client; threaded=1
 Direct3D:
-    Version:  Direct3D 11.0 [level 11.0]
-    Renderer: NVIDIA GeForce GTX 780 (ID=0x1004)
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1070 with Max-Q Design (ID=0x1ba1)
     Vendor:   NVIDIA
-    VRAM:     3039 MB
-    Driver:   23.21.13.8813
+    VRAM:     3072 MB
+    Driver:   23.21.13.9094
 Begin MonoManager ReloadAssembly
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.dll into Unity Child Domain
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\Assembly-CSharp.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll (this message is harmless)
-Loading C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll into Unity Child Domain
-- Completed reload, in  0.140 seconds
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.Core.dll (this message is harmless)
-Platform assembly: C:\Programming\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.dll (this message is harmless)
-desktop: 1920x1080 60Hz; virtual: 3520x1080 at 0,0
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll (this message is harmless)
+Loading D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\TextMeshPro-1.0.55.56.0b11.dll into Unity Child Domain
+- Completed reload, in  0.190 seconds
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\Repos\Processing-Units\Stable Builds\V1.0.0_Data\Managed\System.dll (this message is harmless)
+desktop: 1920x1080 144Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
@@ -38,33 +43,35 @@ The referenced script on this Behaviour (Game Object 'Main Camera_GameObject') i
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
-UnloadTime: 0.982785 ms
-Setting up 4 worker threads for Enlighten.
-  Thread -> id: 25c8 -> priority: 1 
-  Thread -> id: 167c -> priority: 1 
-  Thread -> id: b80 -> priority: 1 
-  Thread -> id: 2d38 -> priority: 1 
+UnloadTime: 1.740520 ms
+Setting up 6 worker threads for Enlighten.
+  Thread -> id: 19b0 -> priority: 1 
+  Thread -> id: 250 -> priority: 1 
+  Thread -> id: 4420 -> priority: 1 
+  Thread -> id: 61b4 -> priority: 1 
+  Thread -> id: 100c -> priority: 1 
+  Thread -> id: 74c4 -> priority: 1 
 The referenced script on this Behaviour (Game Object 'Main Camera_Prefab') is missing!
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
 Unloading 6 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 9.014542 ms
-System memory in use before: 17.6 MB.
-System memory in use after: 17.6 MB.
+UnloadTime: 2.092984 ms
+System memory in use before: 18.0 MB.
+System memory in use after: 18.0 MB.
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 428.
-Total: 0.882177 ms (FindLiveObjects: 0.058112 ms CreateObjectMapping: 0.065280 ms MarkObjects: 0.613120 ms  DeleteObjects: 0.143616 ms)
+Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 428.
+Total: 0.250434 ms (FindLiveObjects: 0.023652 ms CreateObjectMapping: 0.013913 ms MarkObjects: 0.172985 ms  DeleteObjects: 0.038492 ms)
 
 The referenced script on this Behaviour (Game Object 'Main Camera') is missing!
  
 (Filename: C:/buildslave/unity/build/Runtime/Mono/MonoBehaviour.cpp Line: 1743)
 
 Unloading 4 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.484096 ms
-System memory in use before: 17.5 MB.
-System memory in use after: 17.4 MB.
+UnloadTime: 0.470724 ms
+System memory in use before: 17.9 MB.
+System memory in use after: 17.8 MB.
 
-Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 430.
-Total: 0.411392 ms (FindLiveObjects: 0.029952 ms CreateObjectMapping: 0.017408 ms MarkObjects: 0.274176 ms  DeleteObjects: 0.088320 ms)
+Unloading 36 unused Assets to reduce memory usage. Loaded Objects now: 430.
+Total: 0.346434 ms (FindLiveObjects: 0.019942 ms CreateObjectMapping: 0.013449 ms MarkObjects: 0.200347 ms  DeleteObjects: 0.111768 ms)
 

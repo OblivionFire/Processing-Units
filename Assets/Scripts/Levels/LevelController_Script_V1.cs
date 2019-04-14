@@ -10,6 +10,7 @@ namespace ProcessingUnits
 		public GameObject processorAllyPrefab;//Ally processor prefab used to spawn in levels
 		public GameObject processorEnemyPrefab;//Enemy processor prefab used to spawn in levels
 		public GameObject processorNuetralPrefab;//Nuetral processor prefab used to spawn in levels
+		public GameObject powerSupplyPrefab; //power suppyl prefab used to spawn in levels
 		private bool[] complete;
 		private GameObject[] processors;
 
@@ -20,39 +21,59 @@ namespace ProcessingUnits
 		{
 			complete = new bool[8];
 			processors = new GameObject[8];
-			processors[0] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, 0);
-			processors[1] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, 3);
-			processors[2] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, -3);
-			processors[3] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, 0);
-			processors[4] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, 3);
-			processors[5] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, -3);
-			processors[6] = createProcessor(processorNuetralPrefab, 0, 0, 1, 0, 2);
-			processors[7] = createProcessor(processorNuetralPrefab, 0, 0, 1, 0, -2);
+			processors[0] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, 0, 1);
+			processors[1] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, 3, 1);
+			processors[2] = createProcessor(processorAllyPrefab, 9, 1, -4, 0, -3, 1);
+			processors[3] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, 0, 1);
+			processors[4] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, 3, 1);
+			processors[5] = createProcessor(processorEnemyPrefab, 5, -1, 6, 0, -3, 1);
+			processors[6] = createProcessor(processorNuetralPrefab, 0, 0, 1, 0, 2, 1);
+			processors[7] = createProcessor(processorNuetralPrefab, 0, 0, 1, 0, -2, 1);
+			gameMasterV2_Script.instance.setPowerSupplyAlly(createProcessor(powerSupplyPrefab, 0, 1, -7, 0, 0, 0));
+			gameMasterV2_Script.instance.setPowerSupplyEnemy(createProcessor(powerSupplyPrefab, 0, -1, 9, 0, 0, 0));
 
 		}
 
-		GameObject createProcessor(GameObject prefab, int energy, int owner, int x, int y, int z)
+		GameObject createProcessor(GameObject prefab, int energy, int owner, int x, int y, int z, int component)
 		{
-			GameObject temp = Instantiate(prefab);
-			temp.transform.position = new Vector3(x, y, z);
-			processorV2_Script script = temp.GetComponent<processorV2_Script>();
-			script.setData(energy);
-			script.setOwner(owner);
-			if (owner == 1)
+
+			if (component == 0)
 			{
-				script.hoverColor = processorAllyPrefab.GetComponent<processorV2_Script>().hoverColor;
+				GameObject temp = Instantiate(prefab);
+				temp.transform.position = new Vector3(x, y, z);
+				temp.GetComponent<powerSupply_Script>().setOwner(owner);
+				return temp;
 			}
 
-			else if (owner == -1)
+			else if (component == 1)
 			{
-				script.hoverColor = processorEnemyPrefab.GetComponent<processorV2_Script>().hoverColor;
+				GameObject temp = Instantiate(prefab);
+				temp.transform.position = new Vector3(x, y, z);
+				processorV2_Script script = temp.GetComponent<processorV2_Script>();
+				script.setData(energy);
+				script.setOwner(owner);
+
+				if (owner == 1)
+				{
+					script.hoverColor = processorAllyPrefab.GetComponent<processorV2_Script>().hoverColor;
+				}
+
+				else if (owner == -1)
+				{
+					script.hoverColor = processorEnemyPrefab.GetComponent<processorV2_Script>().hoverColor;
+				}
+
+				else if (owner == 0)
+				{
+					script.hoverColor = processorNuetralPrefab.GetComponent<processorV2_Script>().hoverColor;
+				}
+				return temp;
 			}
 
-			else if (owner == 0)
+			else
 			{
-				script.hoverColor = processorNuetralPrefab.GetComponent<processorV2_Script>().hoverColor;
+				return null;
 			}
-			return temp;
 		}
 
 		void Start()
