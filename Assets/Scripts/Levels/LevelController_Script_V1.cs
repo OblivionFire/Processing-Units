@@ -13,6 +13,8 @@ namespace ProcessingUnits
 		public GameObject powerSupplyPrefab; //power suppyl prefab used to spawn in levels
 		private bool[] complete;
 		private GameObject[] processors;
+		public double dataOverlayTimer;
+		public bool dataVisState;
 
 		//[Header("Private Veriable: GameObjects")]
 		//Private Veriables
@@ -31,6 +33,8 @@ namespace ProcessingUnits
 			processors[7] = createProcessor(processorNuetralPrefab, 0, 0, 1, 0, -2, 1);
 			gameMasterV2_Script.instance.setPowerSupplyAlly(createProcessor(powerSupplyPrefab, 0, 1, -7, 0, 0, 0));
 			gameMasterV2_Script.instance.setPowerSupplyEnemy(createProcessor(powerSupplyPrefab, 0, -1, 9, 0, 0, 0));
+			dataOverlayTimer = 1.0;
+			dataVisState = true;
 
 		}
 
@@ -86,22 +90,40 @@ namespace ProcessingUnits
 		{
 			checkLevel(processors);
 			levelComplete(complete);
+			dataOverlayTimer -= Time.deltaTime;
+
+			if ((Input.GetKey("o")) && (dataOverlayTimer <= 0.0))
+			{
+				dataVisState = !dataVisState;
+				powerOverlayToggle(dataVisState);
+				dataOverlayTimer = 1.0;
+			}
 		}
+
+		public void powerOverlayToggle(bool state)
+		{
+			for (int i = 0; i < processors.Length; i++)
+			{
+				processors[i].GetComponent<processorV2_Script>().setDataLineVis(state);
+			}
+		}
+
+
 
 		void levelComplete(bool[] checks)
 		{
 			bool nextLevel = true;
-			foreach(bool check in checks)
+			foreach (bool check in checks)
 			{
-				if(check == false)
+				if (check == false)
 				{
 					nextLevel = false;
 				}
 			}
 
-			if(nextLevel == true)
+			if (nextLevel == true)
 			{
-				
+
 			}
 		}
 
@@ -109,7 +131,7 @@ namespace ProcessingUnits
 		{
 			for (int i = 0; i < processors.Length; i++)
 			{
-				if((processors[i].GetComponent<processorV2_Script>().getOwner() == 1) || (processors[i].GetComponent<processorV2_Script>().getOwner() == 0))
+				if ((processors[i].GetComponent<processorV2_Script>().getOwner() == 1) || (processors[i].GetComponent<processorV2_Script>().getOwner() == 0))
 				{
 					complete[i] = true;
 				}

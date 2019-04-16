@@ -129,6 +129,12 @@ MonoBehaviour:
     type: 2}
   processorEnemyPrefab: {fileID: 1230398619893840, guid: 6fb7f7200d2f7924b9c2ef7c86d7ec9b,
     type: 2}
+  powerSupplyAlly: {fileID: 0}
+  powerSupplyEnemy: {fileID: 0}
+  powerOverlayTimer: 0
+  dataOverlayTimer: 0
+  dataVisState: 0
+  powerVisState: 0
 --- !u!1 &287922807
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +428,12 @@ Prefab:
       propertyPath: processorNuetralPrefab
       value: 
       objectReference: {fileID: 1525014422980242, guid: 88c07e40353c4e441bf2bc9b4882d61d,
+        type: 2}
+    - target: {fileID: 114272340748115756, guid: 4766b0f816be8b54c9f8417e3831dddf,
+        type: 2}
+      propertyPath: powerSupplyPrefab
+      value: 
+      objectReference: {fileID: 1362057292093250, guid: c24c0876f951bec4c8c5f71eff452999,
         type: 2}
     m_RemovedComponents:
     - {fileID: 114066165017237574, guid: 4766b0f816be8b54c9f8417e3831dddf, type: 2}

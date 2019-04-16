@@ -465,26 +465,36 @@ namespace ProcessingUnits
 
 		public void removePulse(GameObject pulse)
 		{
-			if(first.getNext() == null)
+
+			if(first == null)
+			{
+
+			}
+
+			else if(first.getNext() == null)
 			{
 				first = null;
+				Destroy(pulse);
 			}
 
 			else
 			{
-				bool exit = true;
+				bool exit = false;
 				scanner = first;
 
 				do
 				{
 					if(scanner.getSelf() == pulse)
 					{
+						Destroy(pulse);
 						scanner.getLast().setNext(scanner.getNext());
 						scanner.getNext().setLast(scanner.getLast());
+						exit = true;
 					}
-					
 
-				} while (exit == false);
+					scanner = scanner.getNext();
+
+				} while ((exit == false) && (scanner.getNext() != null));
 			}
 		}
 
@@ -516,9 +526,19 @@ namespace ProcessingUnits
 
 				while (scanner != null)
 				{
-					scanner.getSelf().GetComponent<MeshRenderer>().enabled = state;
-					scanner.getSelf().GetComponent<Light>().enabled = state;
-					scanner = scanner.getNext();
+					if (scanner.getSelf() == null)
+					{
+						scanner.getLast().setNext(scanner.getNext());
+						scanner.getNext().setLast(scanner.getLast());
+						scanner = scanner.getNext();
+					}
+
+					else
+					{
+						scanner.getSelf().GetComponent<MeshRenderer>().enabled = state;
+						scanner.getSelf().GetComponent<Light>().enabled = state;
+						scanner = scanner.getNext();
+					}
 				}
 			}
 			catch (Exception e)

@@ -20,10 +20,8 @@ namespace ProcessingUnits
 
 		[Header("Overlay Timers")]
 		public double powerOverlayTimer;
-		public double dataOverlayTimer;
 
 		[Header("Overlay Bools")]
-		public bool dataVisState;
 		public bool powerVisState;
 		#region Attacker Setter and Getter
 
@@ -104,7 +102,6 @@ namespace ProcessingUnits
 		void initializeValues()
 		{
 			powerOverlayTimer = 1.0;
-			dataVisState = true;
 			powerVisState = true;
 		}
 
@@ -117,16 +114,8 @@ namespace ProcessingUnits
 
 		void Update()
 		{
-				dataOverlayTimer -= Time.deltaTime;
 				powerOverlayTimer -= Time.deltaTime;
 			
-
-			if ((Input.GetKey("o")) && (dataOverlayTimer <= 0.0))
-			{
-				dataVisState = !dataVisState;
-				this.gameObject.GetComponent<LevelController_Script_TestV1_0_0>().powerOverlayToggle(dataVisState);
-				dataOverlayTimer = 1.0;
-			}
 
 			if((Input.GetKey("p")) && (powerOverlayTimer <= 0.0))
 			{
