@@ -486,9 +486,9 @@ namespace ProcessingUnits
 				{
 					if(scanner.getSelf() == pulse)
 					{
+						Destroy(pulse);
 						scanner.getLast().setNext(scanner.getNext());
 						scanner.getNext().setLast(scanner.getLast());
-						Destroy(pulse);
 						exit = true;
 					}
 
