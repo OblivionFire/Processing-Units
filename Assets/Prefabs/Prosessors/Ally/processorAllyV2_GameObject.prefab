@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 65775222776174306}
   - component: {fileID: 23318211145453660}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Power light 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 65360912248197360}
   - component: {fileID: 23908951637734296}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Power light 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 65665557454860442}
   - component: {fileID: 23982932500187478}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Power light 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -197,8 +197,8 @@ Transform:
   m_Children:
   - {fileID: 224604586458030488}
   - {fileID: 4121157226842156}
-  - {fileID: 4797749712454884}
   - {fileID: 4730266264958482}
+  - {fileID: 4797749712454884}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -254,7 +254,7 @@ Transform:
   m_Children:
   - {fileID: 4597910096357406}
   m_Father: {fileID: 4105415178046410}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4797749712454884
 Transform:
@@ -268,7 +268,7 @@ Transform:
   m_Children:
   - {fileID: 4976846473428164}
   m_Father: {fileID: 4105415178046410}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4976846473428164
 Transform:
