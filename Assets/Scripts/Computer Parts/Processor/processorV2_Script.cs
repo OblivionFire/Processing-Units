@@ -18,6 +18,9 @@ namespace ProcessingUnits
 
 		[Header("Object Stats: Power")]
 		private float power;//0.0<=x<=3.0
+        public Light powerOne;
+        public Light powerTwo;
+        public Light powerThree;
 
 		[Header("Object Stats: Heat")]
 		private int heat;//0<=x<=100 100 = shut down  65-85 is sweet spot
@@ -144,6 +147,29 @@ namespace ProcessingUnits
 			get { return power; }
 			set { power = value; }
 		}
+
+        public Light getPowerLight(int light)
+        {
+            if(light == 1)
+            {
+                return powerOne;
+            }
+
+            else if(light == 2)
+            {
+                return powerTwo;
+            }
+
+            else if(light == 3)
+            {
+                return powerThree;
+            }
+
+            else
+            {
+                return null;
+            }
+        }
 
 		public void powered(bool powerX)
 		{
@@ -546,6 +572,38 @@ namespace ProcessingUnits
 				Debug.LogException(e, this);
 			}
 		}
+
+        public void setPowerLightVis(bool state)
+        {
+            bool newState = !state;
+
+            if(newState == false)
+            {
+                //Used to diable the power lights when the power overlay is turned off
+                powerOne.enabled = false;
+                powerTwo.enabled = false;
+                powerThree.enabled = false;
+            }
+
+            else
+            {
+                //used to enable to power lights when the power overlay is turned on, stacked if statements enable the correct amount 
+                //power lights for the current power level
+                if((0 < power) && (power <= 1))
+                {
+                    powerOne.enabled = true;
+                    if ((1 < power) && (power <= 2))
+                    {
+                        powerTwo.enabled = true;
+                        if ((2 < power) && (power <= 3))
+                        {
+                            powerThree.enabled = true;
+                        }
+                    } 
+                }
+                
+            }
+        }
 
 		#endregion
 

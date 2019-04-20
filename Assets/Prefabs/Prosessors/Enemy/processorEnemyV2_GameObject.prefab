@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4939972687909108}
   - component: {fileID: 108111445587233044}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point light 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,7 +92,7 @@ GameObject:
   - component: {fileID: 4132554279334110}
   - component: {fileID: 108161781034888028}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point light 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ GameObject:
   - component: {fileID: 4182467315951014}
   - component: {fileID: 108104776608930768}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point light 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -210,7 +210,7 @@ Transform:
   m_Children:
   - {fileID: 4939972687909108}
   m_Father: {fileID: 4467785532793628}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4182467315951014
 Transform:
@@ -237,7 +237,7 @@ Transform:
   m_Children:
   - {fileID: 4182467315951014}
   m_Father: {fileID: 4467785532793628}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4467785532793628
 Transform:
@@ -249,9 +249,9 @@ Transform:
   m_LocalPosition: {x: 5, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4168264456456178}
-  - {fileID: 4658158904066036}
   - {fileID: 4261975470070064}
+  - {fileID: 4658158904066036}
+  - {fileID: 4168264456456178}
   - {fileID: 224970326693576008}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -606,6 +606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23cc25c198834b468c6307614006dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerOne: {fileID: 108104776608930768}
+  powerTwo: {fileID: 108161781034888028}
+  powerThree: {fileID: 108111445587233044}
   hoverColor: {r: 0.3455882, g: 0.101643585, b: 0.101643585, a: 0}
   startColor: {r: 0, g: 0, b: 0, a: 0}
   allyProcessor_Material: {fileID: 2100000, guid: 67a24d60277ae7c4ba9d3a307229f910,

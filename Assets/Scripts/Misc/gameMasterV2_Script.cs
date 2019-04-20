@@ -23,6 +23,7 @@ namespace ProcessingUnits
 
 		[Header("Overlay Bools")]
 		public bool powerVisState;
+
 		#region Attacker Setter and Getter
 
 		public void setAttacker(GameObject attackerX)
@@ -114,17 +115,24 @@ namespace ProcessingUnits
 
 		void Update()
 		{
-				powerOverlayTimer -= Time.deltaTime;
+            powerOverlayTimer -= Time.deltaTime;
 			
-
 			if((Input.GetKey("p")) && (powerOverlayTimer <= 0.0))
 			{
-				powerVisState = !powerVisState;
-				powerSupplyAlly.GetComponent<powerSupply_Script>().setPowerLineVis(powerVisState);
-				powerSupplyEnemy.GetComponent<powerSupply_Script>().setPowerLineVis(powerVisState);
+				powerSupplyAlly.GetComponent<powerSupply_Script>().setPowerLineVis(!powerVisState);
+				powerSupplyEnemy.GetComponent<powerSupply_Script>().setPowerLineVis(!powerVisState);
+                powerVisState = !powerVisState;
 				powerOverlayTimer = 1.0;
 			}
 		}
+        
+        public void togglePowerlights(GameObject[] processors, bool state)
+        {
+            for(int i = 0; i < processors.Length; i++)
+            {
+                processors[i].GetComponent<processorV2_Script>().setPowerLightVis(state);
+            }
+        }
 
 		public void initializeAttack()
 		{

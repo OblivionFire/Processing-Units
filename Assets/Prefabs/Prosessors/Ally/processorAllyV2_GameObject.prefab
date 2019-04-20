@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 4976846473428164}
   - component: {fileID: 108552563161477344}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point light 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,7 +128,7 @@ GameObject:
   - component: {fileID: 4597910096357406}
   - component: {fileID: 108373567270552404}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point light 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 4368763183254096}
   - component: {fileID: 108937438776635618}
   m_Layer: 0
-  m_Name: Point light
+  m_Name: Point Light 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -606,6 +606,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e23cc25c198834b468c6307614006dd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  powerOne: {fileID: 108937438776635618}
+  powerTwo: {fileID: 108373567270552404}
+  powerThree: {fileID: 108552563161477344}
   hoverColor: {r: 0.14181446, g: 0.15885419, b: 0.44852942, a: 0}
   startColor: {r: 0, g: 0, b: 0, a: 0}
   allyProcessor_Material: {fileID: 2100000, guid: 67a24d60277ae7c4ba9d3a307229f910,
