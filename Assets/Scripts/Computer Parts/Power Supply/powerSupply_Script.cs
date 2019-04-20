@@ -18,7 +18,7 @@ namespace ProcessingUnits
         private Color startColor; //color of component when no mouse is present
 
         [Header("Misc. Public Veriables")]
-        public int maxPowerOut;
+        public int maxPowerOut; //max number of output cable (slots)
 
 		[Header("Misc. Private Veriables")]
 		private int owner; //Unity onwer (1 ally, 0 neutral, -1 enemy)
