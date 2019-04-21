@@ -81,6 +81,8 @@ namespace ProcessingUnits
                             powerCables[i] = powerCable;
                             powerCable.GetComponent<powerCable_Script>().drawPowerCable(this.gameObject.transform, toPower.transform, toPower.GetComponent<processorV2_Script>(), this, i);
                             gamemaster.setToPower(null, 0);
+                            currentPowerOut += 1;
+
 
                             if (visState == false)
                             {
@@ -95,7 +97,15 @@ namespace ProcessingUnits
 
             else
             {
+                if(currentProcessorPower <= 2)
+                {
+                    toPower.GetComponent<processorV2_Script>().setPower(currentPowerOut + 1);
+                }
 
+                else if(currentProcessorPower == 3)
+                {
+
+                }
             }
         }
 
