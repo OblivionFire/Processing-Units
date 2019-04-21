@@ -17,7 +17,7 @@ namespace ProcessingUnits
         private int roundRobin;//used to roundRobin data
 
         [Header("Object Stats: Power")]
-        private float power;//0.0<=x<=3.0
+        private int power;//0.0<=x<=3.0
         public Light powerOne;
         public Light powerTwo;
         public Light powerThree;
@@ -142,7 +142,7 @@ namespace ProcessingUnits
         #endregion
         #region ObjectStats: Power
 
-        public void setPower(float powerLevel)
+        public void setPower(int powerLevel)
         {
             if((powerLevel >= 0.0) && (powerLevel <= 3.0))
             {
@@ -682,7 +682,7 @@ namespace ProcessingUnits
 
             if (Input.GetMouseButtonDown(1))
             {
-                gameMaster.setToPower(this.gameObject);
+                gameMaster.setToPower(this.gameObject, power);
             }
         }
 

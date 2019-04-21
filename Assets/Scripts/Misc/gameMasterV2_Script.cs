@@ -62,7 +62,7 @@ namespace ProcessingUnits
 		}
         #endregion
         #region toPower Setter
-        public void setToPower(GameObject prosessorToPower)
+        public void setToPower(GameObject prosessorToPower, int currentPowerLevel)
         {
             if (prosessorToPower == null)
             {
@@ -71,17 +71,17 @@ namespace ProcessingUnits
 
             else if (prosessorToPower.tag == "AllyComputerUnit")
             {
-                powerSupplyAlly.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+                powerSupplyAlly.GetComponent<powerSupply_Script>().powerLink(prosessorToPower, currentPowerLevel);
             }
 
 			else if (prosessorToPower.tag == "EnemyComputerUnit")
 			{
-				powerSupplyEnemy.GetComponent<powerSupply_Script>().powerLink(prosessorToPower);
+				powerSupplyEnemy.GetComponent<powerSupply_Script>().powerLink(prosessorToPower, currentPowerLevel);
 			}
             
             else
             {
-                Debug.Log("Trying to power an object that is not tagged as a ally or enemy computer unit: " + toPower);
+                Debug.Log("Trying to power an object that is not tagged as a ally or enemy computer unit, and is not null: " + toPower);
             }
         }
         #endregion

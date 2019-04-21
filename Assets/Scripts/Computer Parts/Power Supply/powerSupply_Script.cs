@@ -17,13 +17,14 @@ namespace ProcessingUnits
         public Color hoverColor; //color of component when mouse is held over
         private Color startColor; //color of component when no mouse is present
 
-        [Header("Misc. Public Veriables")]
-        public int maxPowerOut; //max number of output cable (slots)
+        [Header("Power Lines")]
+        public int maxPowerOut; //max power output capable, will be changed to watts at some point
+        public int currentPowerOut; //current output
+        private int maxPower; //max number of power cables allowed, will be broken down into actual pins at some point
+        private GameObject[] powerCables; //array of power cables
 
-		[Header("Misc. Private Veriables")]
+        [Header("Misc. Private Veriables")]
 		private int owner; //Unity onwer (1 ally, 0 neutral, -1 enemy)
-		private int maxPower; //max number of power cables allowed, will be broken down into actual pins at some point
-		private GameObject[] powerCables; //array of power cables
 		private Renderer rend; //render for this GameObject
 		private bool visState;
 
@@ -44,7 +45,8 @@ namespace ProcessingUnits
 		void initializeValues()
         {
             gamemaster = gameMasterV2_Script.instance;
-            maxPower = 4;
+            maxPower = 3;
+            maxPowerOut = 6;
             powerCables = new GameObject[maxPower];
             rend = this.GetComponent<Renderer>();
             startColor = rend.material.color;
@@ -64,25 +66,36 @@ namespace ProcessingUnits
 
         }
 
-        public void powerLink(GameObject toPower)
+        public void powerLink(GameObject toPower, int currentProcessorPower)
         {
-            for (int i = 0; i < powerCables.Length; i++)
+            if (currentProcessorPower == 0)
             {
-                if (powerCables[i] == null)
+                for (int i = 0; i < powerCables.Length; i++)
                 {
-                    toPower.GetComponent<processorV2_Script>().powered(true);
-                    GameObject powerCable = Instantiate(powerCablePrefab);
-					powerCables[i] = powerCable;
-                    powerCable.GetComponent<powerCable_Script>().drawPowerCable(this.gameObject.transform, toPower.transform, toPower.GetComponent<processorV2_Script>(), this, i);
-                    gamemaster.setToPower(null);
+                    if (currentPowerOut + 1 <= maxPowerOut)
+                    {
+                        if (powerCables[i] == null)
+                        {
+                            toPower.GetComponent<processorV2_Script>().powered(true);
+                            GameObject powerCable = Instantiate(powerCablePrefab);
+                            powerCables[i] = powerCable;
+                            powerCable.GetComponent<powerCable_Script>().drawPowerCable(this.gameObject.transform, toPower.transform, toPower.GetComponent<processorV2_Script>(), this, i);
+                            gamemaster.setToPower(null, 0);
 
-					if(visState == false)
-					{
-						powerCable.GetComponentInChildren<MeshRenderer>().enabled = false;
-					}
+                            if (visState == false)
+                            {
+                                powerCable.GetComponentInChildren<MeshRenderer>().enabled = false;
+                            }
 
-                    return;
+                            return;
+                        }
+                    }
                 }
+            }
+
+            else
+            {
+
             }
         }
 
