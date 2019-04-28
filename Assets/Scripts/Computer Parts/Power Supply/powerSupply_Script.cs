@@ -104,8 +104,16 @@ namespace ProcessingUnits
 
                 else if(currentProcessorPower == 3)
                 {
-
-                }
+					toPower.GetComponent<processorV2_Script>().setPower(0);
+					for(int i = 0; i < powerCables.Length; i++)
+					{
+						if(toPower.GetComponent<processorV2_Script>() == powerCables[i].GetComponent<powerCable_Script>().getTarget())
+						{
+							Destroy(powerCables[i]);
+							return;
+						}
+					}
+				}
             }
         }
 

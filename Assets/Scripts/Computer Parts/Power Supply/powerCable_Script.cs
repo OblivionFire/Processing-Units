@@ -14,10 +14,19 @@ namespace ProcessingUnits
 		[Header("Scripts")]
         public processorV2_Script target;
 		public powerSupply_Script home;
- 
 
-        // Use this for initialization
-        void Start()
+
+
+		#region Getters/Setters
+
+		public processorV2_Script getTarget()
+		{
+			return target;
+		}
+		
+		#endregion
+		// Use this for initialization
+		void Start()
         {
         }
 
