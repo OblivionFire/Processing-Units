@@ -38,7 +38,9 @@ namespace ProcessingUnits
         public Material nuetralProcessor_Material;//nuetral processor material.
         public Material enemyProcessor_Material;// enemy processor material.
         public Material allyPulse_Material;//used for data trans bar
-        public Material enemyPulse_Material;//used for data trans bar 
+        public Material enemyPulse_Material;//used for data trans bar
+		public Material offPowerLight;//material for when a power light is off
+		public Material onPowerLight;//material for when a power light is on
 
         [Header("Unity Presets: GameObjects")]
         public GameObject allyDataPulsePrefab;//object used to visualize data transfer
@@ -60,6 +62,7 @@ namespace ProcessingUnits
         private EnergyLine_Script ELS;//energy line script of the processor
         gameMasterV2_Script gameMaster;
         processorUI_Script processorEnergyUIScript;
+		private powerSupply_Script powerSupply;//referance to the power supply script, this will eventually be replaced to a targetting method like the processors
 
         [Header("Private Veribales: Boolean Values")]
         private bool[] targetDeffending;//true if the target is deffending. might not be used
